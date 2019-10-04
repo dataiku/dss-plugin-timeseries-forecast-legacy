@@ -74,8 +74,15 @@ if(length(intersect(EXT_SERIES_COLUMNS, forbiddenExternalColumnNames)) != 0) {
   PrintPlugin(errorMsg, stop = TRUE)
 }
 columnClasses <- c("character", rep("numeric", 1 + length(EXT_SERIES_COLUMNS)))
-df <- dkuReadDataset(INPUT_DATASET_NAME, columns = selectedColumns, colClasses = columnClasses) %>%
-  PrepareDataframeWithTimeSeries(TIME_COLUMN, c(SERIES_COLUMN, EXT_SERIES_COLUMNS),
+df <- dkuReadDataset(INPUT_DATASET_NAME, columns = selectedColumns, colClasses = columnClasses) 
+# Fix case of invalid column names in input
+TIME_COLUMN <- names(df)[1]
+SERIES_COLUMNS <- names(df)[2]
+if(ncol(df) > 2) {
+  EXT_SERIES_COLUMNS <- names(df)[3:ncol(df)]
+}
+
+df <- df %>% PrepareDataframeWithTimeSeries(TIME_COLUMN, c(SERIES_COLUMN, EXT_SERIES_COLUMNS),
                                  GRANULARITY, resample = FALSE)
 names(df) <- c('ds','y', EXT_SERIES_COLUMNS) # Converts df to generic prophet-compatible format
 # if (PROPHET_MODEL_ACTIVATED && PROPHET_MODEL_GROWTH == 'logistic') {
