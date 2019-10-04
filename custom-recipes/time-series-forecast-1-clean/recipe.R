@@ -20,7 +20,7 @@ checkPartitioning <- CheckPartitioningSettings(INPUT_DATASET_NAME)
 selectedColumns <- c(TIME_COLUMN, SERIES_COLUMNS)
 columnClasses <- c("character", rep("numeric", length(SERIES_COLUMNS)))
 dfInput <- dkuReadDataset(INPUT_DATASET_NAME, columns = selectedColumns, colClasses = columnClasses)
-
+PrintPlugin("Test")
 
 ##### DATA PREPARATION STAGE #####
 
