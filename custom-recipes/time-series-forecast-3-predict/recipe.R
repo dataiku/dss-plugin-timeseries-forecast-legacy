@@ -56,8 +56,12 @@ if (!is.na(FUTURE_XREG_DATASET_NAME)) {
   PrintPlugin("Including the future values of external regressors")
   selectedColumns <- c(TIME_COLUMN, EXT_SERIES_COLUMNS)
   columnClasses <- c("character", rep("numeric", length(EXT_SERIES_COLUMNS)))
-  dfXreg <- dkuReadDataset(FUTURE_XREG_DATASET_NAME, columns = selectedColumns, colClasses = columnClasses) %>%
-    PrepareDataframeWithTimeSeries(TIME_COLUMN, EXT_SERIES_COLUMNS,
+  dfXreg <- dkuReadDataset(FUTURE_XREG_DATASET_NAME, columns = selectedColumns, colClasses = columnClasses) 
+   # Fix case of invalid column names in input
+  TIME_COLUMN <- names(dfXreg)[1]
+  EXT_SERIES_COLUMNS <- names(dfXreg)[2:ncol(dfXreg)]
+
+  dfXreg <- dfXreg %>% PrepareDataframeWithTimeSeries(TIME_COLUMN, EXT_SERIES_COLUMNS,
       GRANULARITY, AGGREGATION_STRATEGY, resample = FALSE)
   FORECAST_HORIZON <- nrow(dfXreg)
   externalRegressorMatrix <- as.matrix(dfXreg[EXT_SERIES_COLUMNS])
