@@ -78,7 +78,7 @@ df <- dkuReadDataset(INPUT_DATASET_NAME, columns = selectedColumns, colClasses =
 # Fix case of invalid column names in input
 TIME_COLUMN <- names(df)[1]
 SERIES_COLUMNS <- names(df)[2]
-if(ncol(df) > 2) {
+if (!(is.null(EXT_SERIES_COLUMNS) || length(EXT_SERIES_COLUMNS) == 0 || is.na(EXT_SERIES_COLUMNS))) {
   EXT_SERIES_COLUMNS <- names(df)[3:ncol(df)]
 }
 
