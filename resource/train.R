@@ -133,7 +133,7 @@ TrainForecastingModels <- function(ts, df, xreg = NULL, modelParameterList,
       .fcn = modelParameters[["modelFunction"]],
       y = ts,
       args = modelParameters[["kwargs"]],
-      .ignoreUnusedArgs = TRUE
+      .ignoreUnusedArgs = FALSE
     )
     endTime = Sys.time()
     PrintPlugin(paste0(modelName," training completed after ",
