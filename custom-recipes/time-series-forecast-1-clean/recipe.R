@@ -18,9 +18,7 @@ for(n in names(config)) {
 checkPartitioning <- CheckPartitioningSettings(INPUT_DATASET_NAME)
 
 selectedColumns <- c(config[["TIME_COLUMN"]], config[["SERIES_COLUMNS"]])
-print(selectedColumns)
 columnClasses <- c("character", rep("numeric", length(config[["SERIES_COLUMNS"]])))
-print(columnClasses)
 dfInput <- dkuReadDataset(INPUT_DATASET_NAME, columns = selectedColumns, colClasses = columnClasses)
 
 # Fix case of invalid column names in input
