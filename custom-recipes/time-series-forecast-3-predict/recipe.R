@@ -11,11 +11,11 @@ EVALUATION_DATASET_NAME <- dkuCustomRecipeInputNamesForRole('EVALUATION_DATASET_
 FUTURE_XREG_DATASET_NAME <- dkuCustomRecipeInputNamesForRole('FUTURE_XREG_DATASET_NAME')[1]
 OUTPUT_DATASET_NAME <- dkuCustomRecipeOutputNamesForRole('OUTPUT_DATASET_NAME')[1]
 
-config = dkuCustomRecipeConfig()
+config <- dkuCustomRecipeConfig()
 for(n in names(config)) {
-  assign(n, CleanPluginParam(config[[n]]))
+  config[[n]] <- CleanPluginParam(config[[n]])
 }
-if (!INCLUDE_FORECAST && !INCLUDE_HISTORY) {
+if (!config[["INCLUDE_FORECAST"]] && !config[["INCLUDE_HISTORY"]]) {
   PrintPlugin("Please include either forecast and/or history", stop = TRUE)
 }
 
@@ -24,22 +24,19 @@ checkPartitioning <- CheckPartitioningSettings(EVALUATION_DATASET_NAME)
 
 # Loads all forecasting objects from the model folder
 LoadForecastingObjects(MODEL_FOLDER_NAME)
-for(n in names(configTrain)) {
-  assign(n, CleanPluginParam(configTrain[[n]]))
-}
 
 
 ##### MODEL SELECTION #####
 
 PrintPlugin("Model selection stage")
 
-if (MODEL_SELECTION == "auto") {
-  evalDf <- dkuReadDataset(EVALUATION_DATASET_NAME, columns = c("model", ERROR_METRIC))
-  SELECTED_MODEL <- evalDf[[which.min(evalDf[[ERROR_METRIC]]), "model"]] %>%
+if (config[["MODEL_SELECTION"]] == "auto") {
+  evalDf <- dkuReadDataset(EVALUATION_DATASET_NAME, columns = c("model", config[["ERROR_METRIC"]]))
+  config[["SELECTED_MODEL"]] <- evalDf[[which.min(evalDf[[config[["ERROR_METRIC"]]]]), "model"]] %>%
     recode(!!!MODEL_UI_NAME_LIST_REV)
 }
 
-PrintPlugin(paste0("Model selection stage completed: ", SELECTED_MODEL, " selected."))
+PrintPlugin(paste0("Model selection stage completed: ", config[["SELECTED_MODEL"]], " selected."))
 
 
 ##### FORECASTING STAGE #####
@@ -48,28 +45,32 @@ PrintPlugin("Forecasting stage")
 
 externalRegressorMatrix <- NULL
 if (!is.na(FUTURE_XREG_DATASET_NAME)) {
-  if (is.null(EXT_SERIES_COLUMNS) || length(EXT_SERIES_COLUMNS) == 0 || is.na(EXT_SERIES_COLUMNS)) {
+  if (is.null(configTrain[["EXT_SERIES_COLUMNS"]]) ||
+     length(configTrain[["EXT_SERIES_COLUMNS"]]) == 0 ||
+      is.na(configTrain[["EXT_SERIES_COLUMNS"]])) {
     PrintPlugin("Future external regressors dataset provided but no external regressors \
                 were provided at training time. Please re-run the Train and Evaluate recipe \
                 with external regressors specified in the recipe settings.", stop = TRUE)
   }
   PrintPlugin("Including the future values of external regressors")
-  selectedColumns <- c(TIME_COLUMN, EXT_SERIES_COLUMNS)
-  columnClasses <- c("character", rep("numeric", length(EXT_SERIES_COLUMNS)))
-  dfXreg <- dkuReadDataset(FUTURE_XREG_DATASET_NAME, columns = selectedColumns, colClasses = columnClasses)
+  selectedColumns <- c(configTrain[["TIME_COLUMN"]], configTrain[["EXT_SERIES_COLUMNS"]])
+  columnClasses <- c("character", rep("numeric", length(configTrain[["EXT_SERIES_COLUMNS"]])))
+  dfXreg <- dkuReadDataset(FUTURE_XREG_DATASET_NAME,
+    columns = selectedColumns, colClasses = columnClasses)
 
    # Fix case of invalid column names in input
   names(dfXreg) <- str_replace_all(names(dfXreg), '[^a-zA-Z0-9]', "_")
-  TIME_COLUMN <- names(dfXreg)[1]
-  EXT_SERIES_COLUMNS <- names(dfXreg)[2:ncol(dfXreg)]
+  configTrain[["TIME_COLUMN"]] <- names(dfXreg)[1]
+  configTrain[["EXT_SERIES_COLUMNS"]] <- names(dfXreg)[2:ncol(dfXreg)]
 
-  dfXreg <- dfXreg %>% PrepareDataframeWithTimeSeries(TIME_COLUMN, EXT_SERIES_COLUMNS,
-      GRANULARITY, AGGREGATION_STRATEGY, resample = FALSE)
-  FORECAST_HORIZON <- nrow(dfXreg)
-  externalRegressorMatrix <- as.matrix(dfXreg[EXT_SERIES_COLUMNS])
-  colnames(externalRegressorMatrix) <- EXT_SERIES_COLUMNS
+  dfXreg <- dfXreg %>% PrepareDataframeWithTimeSeries(
+    configTrain[["TIME_COLUMN"]], configTrain[["EXT_SERIES_COLUMNS"]],
+    configTrain[["GRANULARITY"]], configTrain[["AGGREGATION_STRATEGY"]], resample = FALSE)
+  config[["FORECAST_HORIZON"]] <- nrow(dfXreg)
+  externalRegressorMatrix <- as.matrix(dfXreg[configTrain[["EXT_SERIES_COLUMNS"]]])
+  colnames(externalRegressorMatrix) <- configTrain[["EXT_SERIES_COLUMNS"]]
 } else {
-  if(length(EXT_SERIES_COLUMNS) != 0) {
+  if(length(configTrain[["EXT_SERIES_COLUMNS"]]) != 0) {
     PrintPlugin("External regressors were used at training time but \
                 no dataset for future values of regressors has been provided. \
                 Please add the dataset for future values in the Input / Output tab of the recipe. \
@@ -80,24 +81,25 @@ if (!is.na(FUTURE_XREG_DATASET_NAME)) {
 
 forecastDfList <- GetForecasts(
   ts, df, externalRegressorMatrix,
-  modelList[SELECTED_MODEL],
-  modelParameterList[SELECTED_MODEL],
-  FORECAST_HORIZON,
-  GRANULARITY,
-  CONFIDENCE_INTERVAL,
-  INCLUDE_HISTORY
+  modelList[config[["SELECTED_MODEL"]]],
+  modelParameterList[config[["SELECTED_MODEL"]]],
+  config[["FORECAST_HORIZON"]],
+  configTrain[["GRANULARITY"]],
+  config[["CONFIDENCE_INTERVAL"]],
+  config[["INCLUDE_HISTORY"]]
 )
 
-forecastDf <- forecastDfList[[SELECTED_MODEL]]
+forecastDf <- forecastDfList[[config[["SELECTED_MODEL"]]]]
 
-dfOutput <- CombineForecastHistory(df[c("ds", "y")], forecastDf, INCLUDE_FORECAST, INCLUDE_HISTORY)
-dfOutput[["selected_model"]] <- recode(SELECTED_MODEL, !!!MODEL_UI_NAME_LIST)
+dfOutput <- CombineForecastHistory(df[c("ds", "y")], forecastDf,
+  config[["INCLUDE_FORECAST"]], config[["INCLUDE_HISTORY"]])
+dfOutput[["selected_model"]] <- recode(config[["SELECTED_MODEL"]], !!!MODEL_UI_NAME_LIST)
 
 # Standardises column names
 names(dfOutput) <- dplyr::recode(
   .x = names(dfOutput),
-  ds = TIME_COLUMN,
-  y = SERIES_COLUMN,
+  ds = configTrain[["TIME_COLUMN"]],
+  y = configTrain[["SERIES_COLUMN"]],
   yhat = "forecast",
   yhat_lower = "forecast_lower_confidence_interval",
   yhat_upper = "forecast_upper_confidence_interval",
@@ -105,7 +107,7 @@ names(dfOutput) <- dplyr::recode(
 )
 
 # converts the date from POSIX to a character following dataiku date format in ISO 8601 standard
-dfOutput[[TIME_COLUMN]] <- strftime(dfOutput[[TIME_COLUMN]] , dkuDateFormat)
+dfOutput[[configTrain[["TIME_COLUMN"]]]] <- strftime(dfOutput[[configTrain[["TIME_COLUMN"]]]] , dkuDateFormat)
 
 # # removes the unnecessary floor and cap columns from prophet model if they exist
 # dfOutput <- dfOutput %>%
