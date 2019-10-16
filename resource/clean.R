@@ -120,7 +120,7 @@ PrepareDataframeWithTimeSeries <- function(df, timeColumn, seriesColumns,
   #   data frame with the prepared time series
 
   if (granularity == "hour") {
-    df[[timeColumn]] <- as.POSIXct(df[[timeColumn]], tryFormats = alternativeDateFormats)
+    df[[timeColumn]] <- as.POSIXct(df[[timeColumn]], tryFormats = alternativeDateFormats, tz = "UTC")
   } else {
     df[[timeColumn]] <- as.Date(df[[timeColumn]], tryFormats = alternativeDateFormats)
   }
