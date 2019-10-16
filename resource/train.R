@@ -18,9 +18,9 @@ AVAILABLE_MODEL_NAME_LIST <- c(
 MODEL_FUNCTION_NAME_LIST <- list(
   "NAIVE_MODEL" = list(modelFunction = "NaiveModelWrapper"), # wrapper around forecast package
   # "PROPHET_MODEL" = list(modelFunction = "ProphetModelWrapper"), # wrapper around prophet package
-  "SEASONALTREND_MODEL" = list(modelFunction = "stlf"), # forecast package
+  "SEASONALTREND_MODEL" = list(modelFunction = "SeasonalTrendModelWrapper"), # forecast package
   "EXPONENTIALSMOOTHING_MODEL" = list(modelFunction = "ets"), # forecast package
-  "ARIMA_MODEL" = list(modelFunction = "auto.arima"), # forecast package
+  "ARIMA_MODEL" = list(modelFunction = "AutoArimaModelWrapper"), # forecast package
   "STATESPACE_MODEL" = list(modelFunction = "tbats"), # forecast package
   "NEURALNETWORK_MODEL" = list(modelFunction = "nnetar") # forecast package
 )
@@ -40,12 +40,12 @@ MODEL_UI_NAME_LIST_REV <- split(names(MODEL_UI_NAME_LIST), unlist(MODEL_UI_NAME_
 # List of forecast models which support external regressors
 MODELS_WITH_XREG_SUPPORT = c("ARIMA_MODEL","NEURALNETWORK_MODEL")
 
-NaiveModelWrapper <- function(y, method = "simple", h = 10, level = c(80,95), model = NULL) {
+NaiveModelWrapper <- function(y, method, h = 10, level = c(80,95), model = NULL) {
   # Wraps naive models implementations in the forecast package in a single standard function.
   #
   # Args:
   #   y: input time series of R ts or msts class.
-  #   strategy: character string describing which naive model implementation to use
+  #   method: character string describing which naive model implementation to use
   #             (one of "simple", "seasonal", "drift").
   #   h: horizon of the forecast steps.
   #   level: confidence intervals in percentage.
@@ -97,6 +97,26 @@ NaiveModelWrapper <- function(y, method = "simple", h = 10, level = c(80,95), mo
 #    return(m)
 # }
 
+AutoArimaModelWrapper <- function(y, model = NULL, ...) {
+  # TODO DOC
+  if (is.null(model)) {
+    m <- auto.arima(y = y, ...)
+  } else {
+    m <- Arima(y = y, model = model, ...)
+  }
+  return(m)
+}
+
+SeasonalTrendModelWrapper <- function(y, model = NULL, ...) {
+  # TODO DOC
+  if (is.null(model)) {
+    m <- stlf(y = y, ...)
+  } else {
+    m <- stlm(y = y, model = model, ...)
+  }
+  return(m)
+}
+
 TrainForecastingModels <- function(ts, df, xreg = NULL, modelParameterList,
   refit = FALSE, refitModelList = NULL, verbose = TRUE) {
   # Trains or retrains multiple forecast models on a time series according to
@@ -118,6 +138,7 @@ TrainForecastingModels <- function(ts, df, xreg = NULL, modelParameterList,
   modelList <- list()
   for(modelName in names(modelParameterList)) {
     modelParameters <- modelParameterList[[modelName]]
+    modelParameters[["kwargs"]][["y"]] <- ts
     if (refit && !is.null(refitModelList)) {
       modelParameters[["kwargs"]][["model"]] <- refitModelList[[modelName]]
     }
@@ -127,15 +148,17 @@ TrainForecastingModels <- function(ts, df, xreg = NULL, modelParameterList,
     if(modelName %in% MODELS_WITH_XREG_SUPPORT) {
       modelParameters[["kwargs"]][["xreg"]] <- xreg
     }
-    PrintPlugin(paste0(modelName," training starting"), verbose)
-    startTime = Sys.time()
+    PrintPlugin(paste0(modelName," training starting with parameters"), verbose)
+    if (verbose) {
+      print(modelParameters[["kwargs"]][-which(names(modelParameters[["kwargs"]]) %in% c("y", "xreg"))])
+    }
+    startTime <- Sys.time()
     modelList[[modelName]] <- R.utils::doCall(
       .fcn = modelParameters[["modelFunction"]],
-      y = ts,
-      args = modelParameters["kwargs"],
-      .ignoreUnusedArgs = TRUE
+      args = modelParameters[["kwargs"]],
+      .ignoreUnusedArgs = FALSE
     )
-    endTime = Sys.time()
+    endTime <- Sys.time()
     PrintPlugin(paste0(modelName," training completed after ",
               round(endTime - startTime, 1), " seconds"), verbose)
   }

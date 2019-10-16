@@ -56,9 +56,13 @@ Note that the plugin uses an R code environment so R must be installed and integ
 
 ## Changelog
 
+**Version 0.3.1 "beta 3.1" (2019-10)**
+
+* Various bug fixes, in particular for Expert mode
+
 **Version 0.3.0 "beta 3" (2019-05)**
 
-* Remove dependency on rstan and prophet packages. 
+* Remove dependency on rstan and prophet packages.
 
 **Version 0.2.0 "beta 2" (2019-03)**
 
