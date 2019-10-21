@@ -88,7 +88,7 @@ if (!(is.null(config[["EXT_SERIES_COLUMNS"]]) ||
 
 df <- df %>% PrepareDataframeWithTimeSeries(config[["TIME_COLUMN"]],
     c(config[["SERIES_COLUMN"]], config[["EXT_SERIES_COLUMNS"]]),
-    config[["GRANULARITY"]], resample = FALSE)
+    config[["GRANULARITY"]])
 names(df) <- c('ds','y', config[["EXT_SERIES_COLUMNS"]]) # Converts df to generic prophet-compatible format
 # if (config[["PROPHET_MODEL_ACTIVATED"]] && config[["PROPHET_MODEL_GROWTH"]] == 'logistic') {
 #   df[['floor']] <- config[["PROPHET_MODEL_MINIMUM"]]
