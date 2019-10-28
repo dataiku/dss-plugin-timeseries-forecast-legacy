@@ -7,4 +7,3 @@ plugin:
 	mkdir dist
 	zip -r dist/dss-plugin-${PLUGIN_ID}-${PLUGIN_VERSION}.zip plugin.json code-env custom-recipes resource
 
-include ../Makefile.inc
