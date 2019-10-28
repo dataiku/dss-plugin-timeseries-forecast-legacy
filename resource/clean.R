@@ -120,7 +120,7 @@ PrepareDataframeWithTimeSeries <- function(df, timeColumn, seriesColumns,
   #   data frame with the prepared time series
 
   if (granularity == "hour") {
-    df[[timeColumn]] <- as.POSIXct(df[[timeColumn]], tryFormats = alternativeDateFormats)
+    df[[timeColumn]] <- as.POSIXct(df[[timeColumn]], tryFormats = alternativeDateFormats, tz = "UTC")
   } else {
     df[[timeColumn]] <- as.Date(df[[timeColumn]], tryFormats = alternativeDateFormats)
   }
@@ -140,7 +140,7 @@ PrepareDataframeWithTimeSeries <- function(df, timeColumn, seriesColumns,
     # even if we do not perform aggregation and resampling, we need to check
     # that dataframe is not irregularly sampled which would cause models to fail
     if (nrow(dateRange) != nrow(df)) {
-      PrintPlugin(paste0("Data is not sampled at ", GRANULARITY, " granularity"), stop = TRUE)
+      PrintPlugin(paste0("Data is not sampled at ", granularity, " granularity"), stop = TRUE)
     }
     dfOutput <- df
   }

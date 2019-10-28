@@ -3,3 +3,4 @@
 "lubridate","1.7.4"
 "R.utils","2.8.0"
 "dplyr","0.8.0.1"
+"stringr","1.4.0"

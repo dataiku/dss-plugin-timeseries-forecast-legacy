@@ -1,6 +1,7 @@
 library(dataiku)
 library(jsonlite)
 library(R.utils)
+library(stringr)
 
 # Set number of digits to use when printing Sys.time.
 # It is needed to store version name in the model folder at millisecond granularity.
@@ -31,17 +32,19 @@ InferType <- function(x) {
   #   x: atomic character element.
   #
   # Returns:
-  #   Object of inferred type with the same name as the input
-
-  if (!is.na(suppressWarnings(as.numeric(x)))) {
-    xInferred <- as.numeric(x)
-  } else if (!is.na(suppressWarnings(as.logical(x)))) {
-    xInferred <- as.logical(x)
+  #   Object of inferred type
+  if (length(x) >  1) {
+      return(x) # do not apply inference to vector or list
   } else {
-     xInferred <- as.character(x)
+      if (!is.na(suppressWarnings(as.numeric(x)))) {
+        xInferred <- as.numeric(x)
+      } else if (!is.na(suppressWarnings(as.logical(x)))) {
+        xInferred <- as.logical(x)
+      } else {
+         xInferred <- as.character(x)
+      }
+      return(xInferred)
   }
-  names(xInferred) <- names(x)
-  return(xInferred)
 }
 
 CleanPluginParam <- function(param) {
@@ -55,19 +58,17 @@ CleanPluginParam <- function(param) {
   # Returns:
   #   Parameter of inferred type
 
-  if (length(param) > 1) { # if the parameter has multiple values
+  if (length(param) >= 1) { # if the parameter has multiple values
     if (!is.null(names(param))) { # if parameter is a MAP
       output <- list()
       for(n in names(param)) {
         output[[n]] <- InferType(param[[n]])
       }
-    } else { # if parameter is a COLUMNS list
-        output <- param
+    } else {
+        output <- InferType(param)
     }
-  } else if (length(param) == 0) { # if MAP parameter is empty
+  } else { # if empty
     output <- list()
-  } else {
-    output <- InferType(param)
   }
   return(output)
 }
