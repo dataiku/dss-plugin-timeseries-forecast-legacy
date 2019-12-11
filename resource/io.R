@@ -156,37 +156,6 @@ WriteDatasetWithPartitioningColumn <- function(df, outputDatasetName) {
   dkuWriteDataset(df, outputDatasetName)
 }
 
-GetFolderPathWithPartitioning <- function(folderName) {
-  # Gets path to the folder partition if partitioning is activated, else path to the whole folder.
-  # This is needed to write to a specific folder partition, as there are no dataiku R method
-  # to get the *current* folder partition path with respect to a Build job.
-  # Ideally this could be handled natively in our R API similarly to dkuWriteDataset
-  # which writes to the current partition if the partition argument is blank.
-  #
-  # Args:
-  #   folderName: dataiku folder name. Has to be on a local filesystem (enforced at recipe creation).
-  #
-  # Returns:
-  #   Folder path with or without partitioning
-
-  outputFolderIsPartitioned <- dkuManagedFolderDirectoryBasedPartitioning(folderName)
-  partitionDimensionName <- GetPartitioningDimension()
-  partitioningIsActivated <- partitionDimensionName != ''
-  if (partitioningIsActivated && outputFolderIsPartitioned) {
-    filePath <- file.path(
-      dkuManagedFolderPath(folderName),
-      dkuManagedFolderPartitionFolder(folderName,
-        partition = dkuFlowVariable(paste0("DKU_DST_", partitionDimensionName)))
-    )
-    filePath <- normalizePath(gsub("//","/",filePath))
-  } else if (partitioningIsActivated && ! outputFolderIsPartitioned) {
-    PrintPlugin("Partitioning should be activated on output folder", stop = TRUE)
-  } else {
-    filePath <- dkuManagedFolderPath(folderName)
-  }
-  return(filePath)
-}
-
 dkuManagedFolderCopyFromLocalWithPartitioning <- function(folderName, source_base_path, partition_id = NULL) {
   # Copies content of a folder from a local path to a remote Dataiku Folder.
   # This function is the equivalent of dkuManagedFolderCopyFromLocal with an additional parameter for partitioning.
@@ -194,8 +163,8 @@ dkuManagedFolderCopyFromLocalWithPartitioning <- function(folderName, source_bas
   # Later down the line this function may become part of our native R API.
   #
   # Args:
-  #   folderName: dataiku folder name. Has to be on a local filesystem (enforced at recipe creation).
-  #
+  #   folderName: dataiku folder name.
+  #   source_base_path: path in the local filesystem. Can be the result of
   # Returns:
   #   Folder path with or without partitioning
     local_paths <- list.files(source_base_path, recursive = TRUE)
