@@ -250,6 +250,7 @@ SaveForecastingObjects <- function(folderName, versionName, ...) {
 }
 
 LoadForecastingObjects <- function(folderName, versionName = NULL) {
+  # TODO
   # Loads forecasting objects from the folder with saved forecasting objects
   # written by the SaveForecastingObjects function.
   #
