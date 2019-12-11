@@ -184,6 +184,35 @@ dkuManagedFolderCopyFromLocalWithPartitioning <- function(folderName, source_bas
   PrintPlugin("Done copying directory from local filesystem to Dataiku Folder")
 }
 
+dkuManagedFolderCopyToLocalWithPartitioning <- function (folderName, local_base_path, partition_id = NULL) {
+  # Copies content of a Dataiku Folder to a local filesystem directory
+  # This function is the equivalent of dkuManagedFolderCopyToLocal with an additional parameter for partitioning.
+  #
+  # Args:
+  #   folderName: dataiku folder name.
+  #   local_base_path: target path in the local filesystem.
+  #   partition_id: origin partition in the Dataiku Folder (optional).
+  #
+  # Returns:
+  #   Nothing, simply copies the directory
+
+  folder_paths <- dkuManagedFolderPartitionPaths(folder_id, partition_id)
+  for (folder_path in folder_paths) {
+      dir_to_create=dirname(paste0(local_base_path, folder_path))
+      if(!dir.exists(dir_to_create)) {
+              dir.create(dir_to_create, recursive = TRUE)
+          }
+      local_path = paste0(local_base_path, folder_path)
+      local_file = file(local_path, "wb")
+      print(paste("Copying", folder_path, "to", local_path))
+      data = dkuManagedFolderDownloadPath(folder_id, folder_path,
+          as = "raw")
+      writeBin(data, local_file)
+      close(local_file)
+  }
+  print("Done copying")
+}
+
 SaveForecastingObjects <- function(folderName, versionName, ...) {
   # Saves forecasting objects to a single Rdata file in an output folder.
   # Creates a standard directory structure folderpath/(partitionid/)versions/models.RData.
