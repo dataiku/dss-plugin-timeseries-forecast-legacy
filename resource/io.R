@@ -175,7 +175,7 @@ dkuManagedFolderCopyFromLocalWithPartitioning <- function(folderName, source_bas
     PrintPlugin(paste0("Uploading ", local_path))
     complete_path <- paste0(source_base_path, "/", local_path)
     local_file <- file(complete_path, "rb")
-    data = readBin(local_file, file.info(complete_path)$size)
+    # data = readBin(local_file, file.info(complete_path)$size) was causing an issue for RData files
     if(!is.null(partition_id)) {
         local_path <- file.path(partition_id, local_path)
     }
