@@ -187,6 +187,7 @@ dkuManagedFolderCopyFromLocalWithPartitioning <- function(folderName, source_bas
 dkuManagedFolderCopyToLocalWithPartitioning <- function (folderName, local_base_path, partition_id = NULL) {
   # Copies content of a Dataiku Folder to a local filesystem directory
   # This function is the equivalent of dkuManagedFolderCopyToLocal with an additional parameter for partitioning.
+  # Later down the line this function may become part of our native R API.
   #
   # Args:
   #   folderName: dataiku folder name.
@@ -198,19 +199,18 @@ dkuManagedFolderCopyToLocalWithPartitioning <- function (folderName, local_base_
 
   folder_paths <- dkuManagedFolderPartitionPaths(folderName, partition_id)
   for (folder_path in folder_paths) {
-      dir_to_create = dirname(paste0(local_base_path, folder_path))
-      if(!dir.exists(dir_to_create)) {
-              dir.create(dir_to_create, recursive = TRUE)
-          }
-      local_path = paste0(local_base_path, folder_path)
-      local_file = file(local_path, "wb")
-      print(paste("Copying", folder_path, "to", local_path))
-      data = dkuManagedFolderDownloadPath(folder_id, folder_path,
-          as = "raw")
-      writeBin(data, local_file)
-      close(local_file)
+    dir_to_create <- dirname(paste0(local_base_path, folder_path))
+    if(!dir.exists(dir_to_create)) {
+      dir.create(dir_to_create, recursive = TRUE)
+    }
+    local_path <- paste0(local_base_path, folder_path)
+    local_file <- file(local_path, "wb")
+    PrintPlugin(paste0("Copying ", folder_path, " to ", local_path))
+    data <- dkuManagedFolderDownloadPath(folder_id, folder_path, as = "raw")
+    writeBin(data, local_file)
+    close(local_file)
   }
-  print("Done copying")
+  PrintPlugin("Done copying Dataiku Folder to local filesystem")
 }
 
 SaveForecastingObjects <- function(folderName, versionName, ...) {
