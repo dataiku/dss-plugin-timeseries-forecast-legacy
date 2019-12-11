@@ -262,6 +262,7 @@ LoadForecastingObjects <- function(folderName, versionName = NULL) {
   # Returns:
   #   Nothing, simply loads RData file from folder to the global R environment
 
+  folderPath <- file.path(getwd(), "models")
   folderPath <- GetFolderPathWithPartitioning(folderName)
   if (is.null(versionName)) {
     lastVersionPath <- max(list.dirs(file.path(folderPath, "versions"), recursive = FALSE))
