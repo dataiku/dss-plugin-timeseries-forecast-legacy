@@ -250,7 +250,6 @@ SaveForecastingObjects <- function(folderName, versionName, ...) {
 }
 
 LoadForecastingObjects <- function(folderName, versionName = NULL) {
-  # TODO
   # Loads forecasting objects from the folder with saved forecasting objects
   # written by the SaveForecastingObjects function.
   #
@@ -263,8 +262,21 @@ LoadForecastingObjects <- function(folderName, versionName = NULL) {
   # Returns:
   #   Nothing, simply loads RData file from folder to the global R environment
 
+  # saves all versions to a temporary working directory on the local filesystem
   folderPath <- file.path(getwd(), "models")
-  folderPath <- GetFolderPathWithPartitioning(folderName)
+  inputFolderIsPartitioned <- dkuManagedFolderDirectoryBasedPartitioning(folderName)
+  partitionDimensionName <- GetPartitioningDimension()
+  partitioningIsActivated <- partitionDimensionName != ''
+  if (partitioningIsActivated && inputFolderIsPartitioned) {
+    partition_id <- dkuFlowVariable(paste0("DKU_DST_", partitionDimensionName)
+    dkuManagedFolderCopyToLocalWithPartitioning(folderName, folderPath, partition_id)
+  } else if (partitioningIsActivated && !inputFolderIsPartitioned) {
+    PrintPlugin("Partitioning should be activated on input folder", stop = TRUE)
+  } else {
+    dkuManagedFolderCopyToLocalWithPartitioning(folderName, folderPath)
+  }
+
+  # loads model version from RData file into the R workspace
   if (is.null(versionName)) {
     lastVersionPath <- max(list.dirs(file.path(folderPath, "versions"), recursive = FALSE))
   } else {
