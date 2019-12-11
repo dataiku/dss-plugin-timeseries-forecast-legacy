@@ -170,17 +170,17 @@ dkuManagedFolderCopyFromLocalWithPartitioning <- function(folderName, source_bas
   # Returns:
   #   Nothing, simply copies the directory
 
-    local_paths <- list.files(source_base_path, recursive = TRUE)
-    for (local_path in local_paths) {
-        print(paste("Uploading", local_path))
-        complete_path <- paste0(source_base_path, "/", local_path)
-        local_file <- file(complete_path, "rb")
-        data = readBin(local_file, file.info(complete_path)$size)
-        if(!is.null(partition_id)) {
-            local_path <- file.path(partition_id, local_path)
-        }
-        dkuManagedFolderUploadPath(folderName, local_path, local_file)
+  local_paths <- list.files(source_base_path, recursive = TRUE)
+  for (local_path in local_paths) {
+    print(paste("Uploading", local_path))
+    complete_path <- paste0(source_base_path, "/", local_path)
+    local_file <- file(complete_path, "rb")
+    data = readBin(local_file, file.info(complete_path)$size)
+    if(!is.null(partition_id)) {
+        local_path <- file.path(partition_id, local_path)
     }
+    dkuManagedFolderUploadPath(folderName, local_path, local_file)
+  }
   PrintPlugin("Done copying directory from local filesystem to Dataiku Folder")
 }
 
