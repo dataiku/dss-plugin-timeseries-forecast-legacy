@@ -166,8 +166,10 @@ dkuManagedFolderCopyFromLocalWithPartitioning <- function(folderName, source_bas
   #   folderName: dataiku folder name.
   #   source_base_path: path in the local filesystem.
   #   partition_id: partition to copy to in the remote Dataiku Folder
+  #
   # Returns:
-  #   Folder path with or without partitioning
+  #   Nothing, simply copies the directory
+
     local_paths <- list.files(source_base_path, recursive = TRUE)
     for (local_path in local_paths) {
         print(paste("Uploading", local_path))
