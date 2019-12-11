@@ -196,9 +196,9 @@ dkuManagedFolderCopyToLocalWithPartitioning <- function (folderName, local_base_
   # Returns:
   #   Nothing, simply copies the directory
 
-  folder_paths <- dkuManagedFolderPartitionPaths(folder_id, partition_id)
+  folder_paths <- dkuManagedFolderPartitionPaths(folderName, partition_id)
   for (folder_path in folder_paths) {
-      dir_to_create=dirname(paste0(local_base_path, folder_path))
+      dir_to_create = dirname(paste0(local_base_path, folder_path))
       if(!dir.exists(dir_to_create)) {
               dir.create(dir_to_create, recursive = TRUE)
           }
