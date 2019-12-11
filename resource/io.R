@@ -246,6 +246,7 @@ SaveForecastingObjects <- function(folderName, versionName, ...) {
     dkuManagedFolderCopyFromLocalWithPartitioning(folderName, folderPath)
   }
   # removes RData file on the temporary working directory
+  unlink(folderPath, recursive=TRUE)
 }
 
 LoadForecastingObjects <- function(folderName, versionName = NULL) {
