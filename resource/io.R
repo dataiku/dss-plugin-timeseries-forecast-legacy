@@ -191,7 +191,6 @@ dkuManagedFolderCopyFromLocalWithPartitioning <- function(folderName, source_bas
   # Copies content of a folder from a local path to a remote Dataiku Folder.
   # This function is the equivalent of dkuManagedFolderCopyFromLocal with an additional parameter for partitioning.
   # It also solves a bug with unreadable RData files that was fixed in DSS 6.0.1.
-  # This way the plugin can work in older DSS versions.
   # Later down the line this function may become part of our native R API.
   #
   # Args:
