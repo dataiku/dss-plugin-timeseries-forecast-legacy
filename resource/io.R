@@ -143,7 +143,7 @@ WriteDatasetWithPartitioningColumn <- function(df, outputDatasetName) {
 
   outputFullName <- dataiku:::dku__resolve_smart_name(outputDatasetName) # bug with naming from plugins on DSS 5.0.2
   outputId <- dataiku:::dku__ref_to_name(outputFullName)
-  outputDatasetType <- dkuGetDatasetLocationInfo(outputId)[["locationInfoType"]]
+  outputDatasetType <- dkuGetDatasetLocationInfo(outputId)[["locationInfoType"]] # only works in DSS 5.0.5 or higher
   partitionDimensionName <- GetPartitioningDimension()
   partitioningIsActivated <- partitionDimensionName != ''
   if (partitioningIsActivated && outputDatasetType != 'SQL') { # Filesystem partitioning
@@ -185,6 +185,27 @@ GetFolderPathWithPartitioning <- function(folderName) {
     filePath <- dkuManagedFolderPath(folderName)
   }
   return(filePath)
+}
+
+dkuManagedFolderCopyFromLocalWithPartitioning <- function(folderName, source_base_path, partition_id = NULL) {
+  # Copies content of a folder from a local path to a remote Dataiku Folder.
+  # This function is the equivalent of dkuManagedFolderCopyFromLocal with an additional parameter for partitioning
+  # Args:
+  #   folderName: dataiku folder name. Has to be on a local filesystem (enforced at recipe creation).
+  #
+  # Returns:
+  #   Folder path with or without partitioning
+    local_paths <- list.files(source_base_path, recursive = TRUE)
+    for (local_path in local_paths) {
+        print(paste("Uploading", local_path))
+        complete_path <- paste0(source_base_path, "/", local_path)
+        local_file <- file(complete_path, "rb")
+        data = readBin(local_file, file.info(complete_path)$size)
+        if(!is.null(partition_id)) {
+            local_path <- file.path(partition_id, local_path)
+        }
+        dkuManagedFolderUploadPath(folderName, local_path, local_file)
+    }
 }
 
 SaveForecastingObjects <- function(folderName, versionName, ...) {
