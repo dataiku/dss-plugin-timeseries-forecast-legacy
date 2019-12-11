@@ -157,14 +157,15 @@ WriteDatasetWithPartitioningColumn <- function(df, outputDatasetName) {
 }
 
 dkuManagedFolderCopyFromLocalWithPartitioning <- function(folderName, source_base_path, partition_id = NULL) {
-  # Copies content of a folder from a local path to a remote Dataiku Folder.
+  # Copies content of a local filesystem directory to a Dataiku Folder.
   # This function is the equivalent of dkuManagedFolderCopyFromLocal with an additional parameter for partitioning.
   # It also solves a bug with unreadable RData files that was fixed in DSS 6.0.1.
   # Later down the line this function may become part of our native R API.
   #
   # Args:
   #   folderName: dataiku folder name.
-  #   source_base_path: path in the local filesystem. Can be the result of
+  #   source_base_path: path in the local filesystem.
+  #   partition_id: partition to copy to in the remote Dataiku Folder
   # Returns:
   #   Folder path with or without partitioning
     local_paths <- list.files(source_base_path, recursive = TRUE)
