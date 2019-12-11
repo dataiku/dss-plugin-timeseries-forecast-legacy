@@ -268,7 +268,7 @@ LoadForecastingObjects <- function(folderName, versionName = NULL) {
   partitionDimensionName <- GetPartitioningDimension()
   partitioningIsActivated <- partitionDimensionName != ''
   if (partitioningIsActivated && inputFolderIsPartitioned) {
-    partition_id <- dkuFlowVariable(paste0("DKU_DST_", partitionDimensionName)
+    partition_id <- dkuFlowVariable(paste0("DKU_DST_", partitionDimensionName))
     dkuManagedFolderCopyToLocalWithPartitioning(folderName, folderPath, partition_id)
   } else if (partitioningIsActivated && !inputFolderIsPartitioned) {
     PrintPlugin("Partitioning should be activated on input folder", stop = TRUE)
