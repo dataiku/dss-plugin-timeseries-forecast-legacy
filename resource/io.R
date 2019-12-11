@@ -181,6 +181,7 @@ dkuManagedFolderCopyFromLocalWithPartitioning <- function(folderName, source_bas
         }
         dkuManagedFolderUploadPath(folderName, local_path, local_file)
     }
+  PrintPlugin("Done copying directory from local filesystem to Dataiku Folder")
 }
 
 SaveForecastingObjects <- function(folderName, versionName, ...) {
