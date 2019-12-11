@@ -172,7 +172,7 @@ dkuManagedFolderCopyFromLocalWithPartitioning <- function(folderName, source_bas
 
   local_paths <- list.files(source_base_path, recursive = TRUE)
   for (local_path in local_paths) {
-    print(paste("Uploading", local_path))
+    PrintPlugin(paste0("Uploading ", local_path))
     complete_path <- paste0(source_base_path, "/", local_path)
     local_file <- file(complete_path, "rb")
     data = readBin(local_file, file.info(complete_path)$size)
