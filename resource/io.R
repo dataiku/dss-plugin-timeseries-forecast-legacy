@@ -295,4 +295,5 @@ LoadForecastingObjects <- function(folderName, versionName = NULL) {
   for (rdataPath in rdataPathList) {
     load(rdataPath, envir = .GlobalEnv)
   }
+    PrintPlugin("Forecasting models loaded!")
 }
