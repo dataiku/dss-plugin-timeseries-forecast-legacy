@@ -189,7 +189,11 @@ GetFolderPathWithPartitioning <- function(folderName) {
 
 dkuManagedFolderCopyFromLocalWithPartitioning <- function(folderName, source_base_path, partition_id = NULL) {
   # Copies content of a folder from a local path to a remote Dataiku Folder.
-  # This function is the equivalent of dkuManagedFolderCopyFromLocal with an additional parameter for partitioning
+  # This function is the equivalent of dkuManagedFolderCopyFromLocal with an additional parameter for partitioning.
+  # It also solves a bug with unreadable RData files that was fixed in DSS 6.0.1.
+  # This way the plugin can work in older DSS versions.
+  # Later down the line this function may become part of our native R API.
+  #
   # Args:
   #   folderName: dataiku folder name. Has to be on a local filesystem (enforced at recipe creation).
   #
@@ -213,7 +217,7 @@ SaveForecastingObjects <- function(folderName, versionName, ...) {
   # Creates a standard directory structure folderpath/(partitionid/)versions/models.RData.
   #
   # Args:
-  #   folderName: dataiku folder name. Has to be on a local filesystem (enforced at recipe creation).
+  #   folderName: dataiku folder name.
   #   partitionDimensionName: partition dimension name specified in the plugin UI.
   #   checkPartitioning: output of a call to the CheckPartitioningSettings function.
   #   versionName: identifier of the version of the forecasting objects
@@ -234,7 +238,7 @@ LoadForecastingObjects <- function(folderName, versionName = NULL) {
   # written by the SaveForecastingObjects function.
   #
   # Args:
-  #   folderName: dataiku folder name. Has to be on a local filesystem (enforced at recipe creation).
+  #   folderName: dataiku folder name.
   #   partitionDimensionName: partition dimension name specified in the plugin UI.
   #   checkPartitioning: output of a call to the CheckPartitioningSettings function.
   #   versionName: identifier of the version of the forecasting objects.
