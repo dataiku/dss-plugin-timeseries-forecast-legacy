@@ -239,12 +239,13 @@ SaveForecastingObjects <- function(folderName, versionName, ...) {
   partitioningIsActivated <- partitionDimensionName != ''
   if(partitioningIsActivated && outputFolderIsPartitioned) {
     partition_id <- dkuFlowVariable(paste0("DKU_DST_", partitionDimensionName)
-    dkuManagedFolderCopyFromLocalWithPartitioning(folderName, folderPath, partition_id))
+    dkuManagedFolderCopyFromLocalWithPartitioning(folderName, folderPath, partition_id)
   } else if (partitioningIsActivated && !outputFolderIsPartitioned) {
     PrintPlugin("Partitioning should be activated on output folder", stop = TRUE)
   } else {
     dkuManagedFolderCopyFromLocalWithPartitioning(folderName, folderPath)
   }
+  # removes RData file on the temporary working directory
 }
 
 LoadForecastingObjects <- function(folderName, versionName = NULL) {
