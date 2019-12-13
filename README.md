@@ -45,7 +45,7 @@ Having said that, it has always been possible to forecast time series in Dataiku
 
 Another way would be for a data scientist to code her own forecasting pipeline using open source R or Python libraries.
 
-These two ways of building a forecasting pipeline require good knowledge of machine learning, forecasting techniques and programming. They are not accessible to a Data Analyst user. With this plugin, we want to offer a simple way to build a forecasting pipeline without code.
+These two ways of building a forecasting pipeline require good knowledge of machine learning, forecasting techniques and programming. They are not accessible to a Data Analyst user. With this plugin, we offer a simple way to build a forecasting pipeline without code.
 
 
 ## Installation and requirements
