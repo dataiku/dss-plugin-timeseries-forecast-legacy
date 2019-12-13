@@ -58,7 +58,7 @@ Note that the plugin uses an R code environment so R must be installed and integ
 
 **Version 0.4.0 "beta 4.0" (2019-12)**
 
-* Kubernetes and external filesystem support
+* **Kubernetes** and external filesystem support for model storage
 * Keep external regressors in the output dataset of the "Forecast" recipe
 * Add option for filling with previous value in the "Clean" recipe
 * Solves bug in the "Clean recipe" when too many gaps in the time series
