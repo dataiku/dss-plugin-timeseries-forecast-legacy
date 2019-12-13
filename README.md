@@ -50,7 +50,7 @@ These two ways of building a forecasting pipeline require good knowledge of mach
 
 ## Installation and usage of the plugin
 
-Please see [plugin page](https://www.dataiku.com/dss/plugins/info/forecast.html) on Dataiku's website for installation.
+Please see our [official plugin page](https://www.dataiku.com/dss/plugins/info/forecast.html) for installation.
 
 Note that the plugin uses an R code environment so R must be installed and integrated with Dataiku on your machine (version 3.5.0 or above). Anaconda R is not supported. It also requires a recent Dataiku DSS version, at least 5.0.5.
 
