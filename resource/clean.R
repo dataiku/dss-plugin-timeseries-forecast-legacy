@@ -194,18 +194,19 @@ CleanDataframeWithTimeSeries <- function(df, timeColumn, seriesColumns, granular
     }
     # Replace outliers
     if (outliers != 'no') {
-      
-    }
-    if (outliers == 'interpolate') {
       outliersDetected <- forecast::tsoutliers(ts)
-      ts[outliersDetected$index] <- outliersDetected$replacements
-    } else if (outliers == 'impute') {
-      outliersImputation <- case_when(
-        outliersImputeWith == 'median' ~ median(ts, na.rm = TRUE),
-        outliersImputeWith == 'average' ~ mean(ts, na.rm = TRUE),
-        outliersImputeWith == 'constant' ~ outliersImputeConstant
-      )
-      ts[outliersDetected$index] <- outliersImputation
+      if (outliers == 'interpolate') {
+        ts[outliersDetected$index] <- outliersDetected$replacements
+      } else if (outliers == 'previous') {
+
+      } else if (outliers == 'impute') {
+        outliersImputation <- case_when(
+          outliersImputeWith == 'median' ~ median(ts, na.rm = TRUE),
+          outliersImputeWith == 'average' ~ mean(ts, na.rm = TRUE),
+          outliersImputeWith == 'constant' ~ outliersImputeConstant
+        )
+        ts[outliersDetected$index] <- outliersImputation
+      }
     }
     dfOutput[[seriesColumn]] <- as.numeric(ts)
   }
