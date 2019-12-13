@@ -95,6 +95,12 @@ dfOutput <- CombineForecastHistory(df[c("ds", "y")], forecastDf,
   config[["INCLUDE_FORECAST"]], config[["INCLUDE_HISTORY"]])
 dfOutput[["selected_model"]] <- recode(config[["SELECTED_MODEL"]], !!!MODEL_UI_NAME_LIST)
 
+# Keep external regressor columns if any
+if(nrow(dfXreg) != 0) {
+  dfXregStacked <- rbind(configTrain[[]], dfXreg)
+
+}
+
 # Standardises column names
 names(dfOutput) <- dplyr::recode(
   .x = names(dfOutput),
