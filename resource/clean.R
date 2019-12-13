@@ -198,7 +198,8 @@ CleanDataframeWithTimeSeries <- function(df, timeColumn, seriesColumns, granular
       if (outliers == 'interpolate') {
         ts[outliersDetected$index] <- outliersDetected$replacements
       } else if (outliers == 'previous') {
-
+          ts[outliersDetected$index] <- NA
+          ts <- zoo::na.locf(ts)
       } else if (outliers == 'impute') {
         outliersImputation <- case_when(
           outliersImputeWith == 'median' ~ median(ts, na.rm = TRUE),
