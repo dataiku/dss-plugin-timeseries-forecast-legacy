@@ -193,6 +193,7 @@ CleanDataframeWithTimeSeries <- function(df, timeColumn, seriesColumns, granular
       ts[which(is.na(ts))] <- missingImputation
     }
     # Replace outliers
+    if (outliers != 'no')
     if (outliers == 'interpolate') {
       outliersDetected <- forecast::tsoutliers(ts)
       ts[outliersDetected$index] <- outliersDetected$replacements
