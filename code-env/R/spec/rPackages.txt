@@ -1,6 +1,6 @@
-"forecast","8.5"
+"forecast","8.10"
 "xts","0.11-2"
 "lubridate","1.7.4"
-"R.utils","2.8.0"
+"R.utils","2.9.2"
 "dplyr","0.8.0.1"
 "stringr","1.4.0"
