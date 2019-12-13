@@ -96,7 +96,7 @@ dfOutput <- CombineForecastHistory(df[c("ds", "y")], forecastDf,
 dfOutput[["selected_model"]] <- recode(config[["SELECTED_MODEL"]], !!!MODEL_UI_NAME_LIST)
 
 # Keep external regressor columns if any
-if(nrow(dfXreg) != 0) {
+if(!is.na(FUTURE_XREG_DATASET_NAME)) {
   originaldfXreg <- df[c("ds", configTrain[["EXT_SERIES_COLUMNS"]])]
   names(dfXreg) <- c('ds', configTrain[["EXT_SERIES_COLUMNS"]])
   dfXregStacked <- rbind(originaldfXreg, dfXreg)
