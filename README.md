@@ -67,7 +67,7 @@ Note that the plugin uses an R code environment so R must be installed and integ
 
 **Version 0.3.0 "beta 3" (2019-05)**
 
-* Remove dependency on rstan and prophet packages.
+* Remove dependency on rstan and prophet packages (thus removing Prophet model support)
 
 **Version 0.2.0 "beta 2" (2019-03)**
 
