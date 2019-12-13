@@ -182,6 +182,7 @@ CleanDataframeWithTimeSeries <- function(df, timeColumn, seriesColumns, granular
     if (missingValues == 'interpolate') {
       ts <- forecast::na.interp(ts)
     } else if (missingValues == 'impute') {
+      if (missingImputeWith == 'previous')
       missingImputation <- case_when(
         missingImputeWith == 'median' ~ median(ts, na.rm = TRUE),
         missingImputeWith == 'average' ~ mean(ts, na.rm = TRUE),
