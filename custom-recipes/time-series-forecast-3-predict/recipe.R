@@ -99,8 +99,6 @@ dfOutput[["selected_model"]] <- recode(config[["SELECTED_MODEL"]], !!!MODEL_UI_N
 if(nrow(dfXreg) != 0) {
   originaldfXreg <- df[c("ds", configTrain[["EXT_SERIES_COLUMNS"]])]
   names(dfXreg) <- c('ds', configTrain[["EXT_SERIES_COLUMNS"]])
-  print(colnames(originaldfXreg))
-  print(colnames(dfXreg))
   dfXregStacked <- rbind(originaldfXreg, dfXreg)
   dfOutput <- merge(x = dfOutput, y = dfXregStacked, by = "ds", all.x = TRUE)
 }
