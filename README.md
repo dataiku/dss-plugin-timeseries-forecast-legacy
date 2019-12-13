@@ -48,7 +48,7 @@ Another way would be for a data scientist to code her own forecasting pipeline u
 These two ways of building a forecasting pipeline require good knowledge of machine learning, forecasting techniques and programming. They are not accessible to a Data Analyst user. With this plugin, we want to offer a simple way to build a forecasting pipeline without code.
 
 
-## Installation and usage of the plugin
+## Installation and requirements
 
 Please see our [official plugin page](https://www.dataiku.com/dss/plugins/info/forecast.html) for installation.
 
