@@ -155,7 +155,7 @@
                 },
                 {
                     "value": "constant",
-                    "label": "A constant value"
+                    "label": "Choose..."
                 }
             ]
         },
@@ -216,7 +216,7 @@
                 },
                 {
                     "value": "constant",
-                    "label": "A constant value"
+                    "label": "Choose..."
                 }
             ]
         },
