@@ -179,6 +179,7 @@ CleanDataframeWithTimeSeries <- function(df, timeColumn, seriesColumns, granular
   dfOutput <- tibble(!!timeColumn := df[[timeColumn]])
   for(seriesColumn in seriesColumns) {
     ts <- ConvertDataFrameToTimeSeries(df, timeColumn, seriesColumn, granularity)
+    # Replace missing values
     if (missingValues == 'interpolate') {
       ts <- forecast::na.interp(ts)
     } else if (missingValues == 'previous') {
@@ -191,6 +192,7 @@ CleanDataframeWithTimeSeries <- function(df, timeColumn, seriesColumns, granular
       )
       ts[which(is.na(ts))] <- missingImputation
     }
+    # Replace outliers
     if (outliers == 'interpolate') {
       outliersDetected <- forecast::tsoutliers(ts)
       ts[outliersDetected$index] <- outliersDetected$replacements
