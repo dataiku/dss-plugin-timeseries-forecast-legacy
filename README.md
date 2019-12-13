@@ -88,10 +88,7 @@ The plugin requires a recent Dataiku DSS version, at least 5.0.5.
      * Add ability to get multiple model forecasts at the same time for ensembling
      * Fan plot of confidence intervals within the horizon
 
-You can also check its development branch ["time-series-forecast"](https://github.com/dataiku/dataiku-contrib/tree/time-series-forecast/time-series-forecast) on the [dataiku-contrib](https://github.com/dataiku/dataiku-contrib) git repo.
-
-You can also ask your questions on our Q&A, [answers.dataiku.com](https://answers.dataiku.com), or open an [Github issue](https://github.com/dataiku/dataiku-contrib/issues).
-
+You can check current roadmap and log feature requests or issues on the [dedicated Github repository](https://github.com/dataiku/dss-plugin-time-series-forecast/issues).
 
 ## Advanced Usages
 
