@@ -128,7 +128,7 @@
                     "label": "Previous value"
                 },
                 {
-                    "value": "constant",
+                    "value": "impute",
                     "label": "Constant"
                 },
                 {
@@ -142,7 +142,7 @@
             "label": "Impute with",
             "type": "SELECT",
             "mandatory": false,
-            "visibilityCondition": "model.MISSING_VALUES == 'constant'",
+            "visibilityCondition": "model.MISSING_VALUES == 'impute'",
             "defaultValue": "average",
             "selectChoices": [
                 {
