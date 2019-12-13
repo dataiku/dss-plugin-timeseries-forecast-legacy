@@ -143,7 +143,7 @@
             "type": "SELECT",
             "mandatory": false,
             "visibilityCondition": "model.MISSING_VALUES == 'impute'",
-            "defaultValue": "average",
+            "defaultValue": "constant",
             "selectChoices": [
                 {
                     "value": "average",
