@@ -66,6 +66,7 @@ if (!is.na(FUTURE_XREG_DATASET_NAME)) {
   dfXreg <- dfXreg %>% PrepareDataframeWithTimeSeries(
     configTrain[["TIME_COLUMN"]], configTrain[["EXT_SERIES_COLUMNS"]],
     configTrain[["GRANULARITY"]], configTrain[["AGGREGATION_STRATEGY"]], resample = FALSE)
+  names(dfXreg) <- c('ds', config[["EXT_SERIES_COLUMNS"]])
   config[["FORECAST_HORIZON"]] <- nrow(dfXreg)
   externalRegressorMatrix <- as.matrix(dfXreg[configTrain[["EXT_SERIES_COLUMNS"]]])
   colnames(externalRegressorMatrix) <- configTrain[["EXT_SERIES_COLUMNS"]]
