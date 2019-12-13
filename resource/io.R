@@ -277,7 +277,7 @@ LoadForecastingObjects <- function(folderName, versionName = NULL) {
   }
 
   # loads model version from RData file into the R workspace
-  if (is.null(versionName)) {
+  if(is.null(versionName)) {
     lastVersionPath <- max(list.dirs(file.path(folderPath, "versions"), recursive = FALSE))
   } else {
     lastVersionPath <- file.path(folderPath, "versions", versionName)
