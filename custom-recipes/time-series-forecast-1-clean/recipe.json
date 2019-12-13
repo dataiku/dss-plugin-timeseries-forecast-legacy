@@ -117,15 +117,19 @@
             "type": "SELECT",
             "description": "Interpolation is based on tsclean implementation in R \"forecast\" package",
             "mandatory": true,
-            "defaultValue": "impute",
+            "defaultValue": "interpolate",
             "selectChoices": [
                 {
                     "value": "interpolate",
-                    "label": "Interpolate"
+                    "label": "Interpolation"
+                },
+                {
+                    "value": "previous",
+                    "label": "Previous value"
                 },
                 {
                     "value": "impute",
-                    "label": "Impute ..."
+                    "label": "Constant"
                 },
                 {
                     "value": "no",
@@ -141,10 +145,6 @@
             "visibilityCondition": "model.MISSING_VALUES == 'impute'",
             "defaultValue": "previous",
             "selectChoices": [
-                {
-                    "value": "previous",
-                    "label": "Previous value"
-                },
                 {
                     "value": "average",
                     "label": "Average of values"
