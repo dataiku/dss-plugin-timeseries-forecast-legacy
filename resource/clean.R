@@ -194,6 +194,7 @@ CleanDataframeWithTimeSeries <- function(df, timeColumn, seriesColumns, granular
       ts[outliersDetected$index] <- outliersDetected$replacements
     } else if (outliers == 'impute') {
       outliersImputation <- case_when(
+        outliersImputeWith == 'previous' ~ median(ts, na.rm = TRUE),
         outliersImputeWith == 'median' ~ median(ts, na.rm = TRUE),
         outliersImputeWith == 'average' ~ mean(ts, na.rm = TRUE),
         outliersImputeWith == 'constant' ~ outliersImputeConstant
