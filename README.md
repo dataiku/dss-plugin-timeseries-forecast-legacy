@@ -86,7 +86,7 @@ Note that the plugin uses an R code environment so R must be installed and integ
      * Add ability to get multiple model forecasts at the same time for ensembling
      * Fan plot of confidence intervals within the horizon
 
-You can check current roadmap and log feature requests or issues on the [dedicated Github repository](https://github.com/dataiku/dss-plugin-time-series-forecast/issues).
+You can check current roadmap and log feature requests or issues on our [dedicated Github repository](https://github.com/dataiku/dss-plugin-time-series-forecast/issues).
 
 ## Advanced Usages
 
