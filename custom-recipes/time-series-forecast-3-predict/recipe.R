@@ -97,8 +97,8 @@ dfOutput[["selected_model"]] <- recode(config[["SELECTED_MODEL"]], !!!MODEL_UI_N
 
 # Keep external regressor columns if any
 if(nrow(dfXreg) != 0) {
-  dfXregStacked <- rbind(configTrain[[]], dfXreg)
-
+  dfXregStacked <- rbind(df, dfXreg)
+  dfOutput <- merge(x = dfOutput, y = dfXregStacked, by = "ds", all.x = TRUE)
 }
 
 # Standardises column names
