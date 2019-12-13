@@ -183,14 +183,14 @@ CleanDataframeWithTimeSeries <- function(df, timeColumn, seriesColumns, granular
       ts <- forecast::na.interp(ts)
     } else if (missingValues == 'impute') {
       if (missingImputeWith == 'previous') {
-
+        ts <- zoo::na.locf(ts)
       } else {
-          missingImputation <- case_when(
+        missingImputation <- case_when(
           missingImputeWith == 'median' ~ median(ts, na.rm = TRUE),
           missingImputeWith == 'average' ~ mean(ts, na.rm = TRUE),
           missingImputeWith == 'constant' ~ missingImputeConstant
-      )
-      ts[which(is.na(ts))] <- missingImputation
+        )
+        ts[which(is.na(ts))] <- missingImputation
       }
     }
     if (outliers == 'interpolate') {
