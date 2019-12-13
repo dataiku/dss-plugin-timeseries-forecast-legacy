@@ -139,7 +139,7 @@
             "type": "SELECT",
             "mandatory": false,
             "visibilityCondition": "model.MISSING_VALUES == 'impute'",
-            "defaultValue": "constant",
+            "defaultValue": "previous",
             "selectChoices": [
                 {
                     "value": "previous",
