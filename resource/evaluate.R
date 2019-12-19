@@ -229,6 +229,7 @@ EvaluateModelsCrossval <- function(ts, df, xreg = NULL, modelList, modelParamete
     evalXreg <- NULL
     if (!is.null(xreg)) {
       evalXreg <- as.matrix(xreg[(trainRows + 1):(trainRows + horizon),])
+      colnames(evalXreg) <- colnames(xreg)
     }
     PrintPlugin(paste0("Crossval split ", i ,"/", length(cutoffs), " at cutoff ", cutoffs[i],
       " with ", length(trainTs), " training rows"))
