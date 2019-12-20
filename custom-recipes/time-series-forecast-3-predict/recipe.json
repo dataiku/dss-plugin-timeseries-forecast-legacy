@@ -6,6 +6,7 @@
   },
   "kind": "R",
   "selectableFromDataset": "EVALUATION_DATASET_NAME",
+  "selectableFromFolder": "MODEL_FOLDER_NAME",
   "inputRoles": [
     {
       "name": "EVALUATION_DATASET_NAME",
