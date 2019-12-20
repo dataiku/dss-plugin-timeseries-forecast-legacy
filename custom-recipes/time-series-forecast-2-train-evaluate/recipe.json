@@ -60,7 +60,7 @@
     },
     {
       "name": "EXT_SERIES_COLUMNS",
-      "label": "Feature columns",
+      "label": "External features",
       "description": "Optional external regressors - Must be of NUMERIC type",
       "type": "COLUMNS",
       "columnRole": "INPUT_DATASET_NAME",
