@@ -229,6 +229,9 @@ EvaluateModelsCrossval <- function(ts, df, xreg = NULL, modelList, modelParamete
     evalXreg <- NULL
     if (!is.null(xreg)) {
       evalXreg <- as.matrix(xreg[(trainRows + 1):(trainRows + horizon),])
+      if (horizon == 1) { # bug when single step horizon and multiple external regressors
+        evalXreg <- t(evalXreg)
+      }
       colnames(evalXreg) <- colnames(xreg)
     }
     PrintPlugin(paste0("Crossval split ", i ,"/", length(cutoffs), " at cutoff ", cutoffs[i],

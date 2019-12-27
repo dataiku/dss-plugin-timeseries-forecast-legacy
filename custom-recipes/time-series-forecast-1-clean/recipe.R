@@ -39,8 +39,8 @@ dfOutput <- dfInput %>%
     config[["OUTLIERS"]], config[["OUTLIERS_IMPUTE_WITH"]],
     config[["OUTLIERS_IMPUTE_CONSTANT"]])
 
-if (nrow(dfOutput) > 3 * nrow(dfInput)) {
-  PrintPlugin(paste0("Resampled data is 3 times longer than input data. ",
+if (nrow(dfOutput) > 5 * nrow(dfInput) && config[["MISSING_VALUES"]] != 'no') {
+  PrintPlugin(paste0("Resampled data is 5 times longer than input data. ",
     "Please check time granularity setting."), stop = TRUE)
 }
 

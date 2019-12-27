@@ -143,7 +143,7 @@ WriteDatasetWithPartitioningColumn <- function(df, outputDatasetName) {
 
   outputFullName <- dataiku:::dku__resolve_smart_name(outputDatasetName) # bug with naming from plugins on DSS 5.0.2
   outputId <- dataiku:::dku__ref_to_name(outputFullName)
-  outputDatasetType <- dkuGetDatasetLocationInfo(outputId)[["locationInfoType"]]
+  outputDatasetType <- dkuGetDatasetLocationInfo(outputId)[["locationInfoType"]] # only works in DSS 5.0.5 or higher
   partitionDimensionName <- GetPartitioningDimension()
   partitioningIsActivated <- partitionDimensionName != ''
   if (partitioningIsActivated && outputDatasetType != 'SQL') { # Filesystem partitioning
@@ -156,35 +156,61 @@ WriteDatasetWithPartitioningColumn <- function(df, outputDatasetName) {
   dkuWriteDataset(df, outputDatasetName)
 }
 
-GetFolderPathWithPartitioning <- function(folderName) {
-  # Gets path to the folder partition if partitioning is activated, else path to the whole folder.
-  # This is needed to write to a specific folder partition, as there are no dataiku R method
-  # to get the *current* folder partition path with respect to a Build job.
-  # Ideally this could be handled natively in our R API similarly to dkuWriteDataset
-  # which writes to the current partition if the partition argument is blank.
+dkuManagedFolderCopyFromLocalWithPartitioning <- function(folderName, source_base_path, partition_id = NULL) {
+  # Copies content of a local filesystem directory to a Dataiku Folder.
+  # This function is the equivalent of dkuManagedFolderCopyFromLocal with an additional parameter for partitioning.
+  # It also solves a bug with unreadable RData files that was fixed in DSS 6.0.1.
+  # Later down the line this function may become part of our native R API.
   #
   # Args:
-  #   folderName: dataiku folder name. Has to be on a local filesystem (enforced at recipe creation).
+  #   folderName: dataiku folder name.
+  #   source_base_path: path in the local filesystem.
+  #   partition_id: target partition in the Dataiku Folder (optional).
   #
   # Returns:
-  #   Folder path with or without partitioning
+  #   Nothing, simply copies the directory
 
-  outputFolderIsPartitioned <- dkuManagedFolderDirectoryBasedPartitioning(folderName)
-  partitionDimensionName <- GetPartitioningDimension()
-  partitioningIsActivated <- partitionDimensionName != ''
-  if (partitioningIsActivated && outputFolderIsPartitioned) {
-    filePath <- file.path(
-      dkuManagedFolderPath(folderName),
-      dkuManagedFolderPartitionFolder(folderName,
-        partition = dkuFlowVariable(paste0("DKU_DST_", partitionDimensionName)))
-    )
-    filePath <- normalizePath(gsub("//","/",filePath))
-  } else if (partitioningIsActivated && ! outputFolderIsPartitioned) {
-    PrintPlugin("Partitioning should be activated on output folder", stop = TRUE)
-  } else {
-    filePath <- dkuManagedFolderPath(folderName)
+  local_paths <- list.files(source_base_path, recursive = TRUE)
+  for (local_path in local_paths) {
+    PrintPlugin(paste0("Uploading ", local_path))
+    complete_path <- paste0(source_base_path, "/", local_path)
+    local_file <- file(complete_path, "rb")
+    # data = readBin(local_file, file.info(complete_path)$size) was causing an issue for RData files
+    if(!is.null(partition_id)) {
+        local_path <- file.path(partition_id, local_path)
+    }
+    dkuManagedFolderUploadPath(folderName, local_path, local_file)
   }
-  return(filePath)
+  PrintPlugin("Done copying directory from local filesystem to Dataiku Folder")
+}
+
+dkuManagedFolderCopyToLocalWithPartitioning <- function(folderName, local_base_path, partition_id = NULL) {
+  # Copies content of a Dataiku Folder to a local filesystem directory
+  # This function is the equivalent of dkuManagedFolderCopyToLocal with an additional parameter for partitioning.
+  # Later down the line this function may become part of our native R API.
+  #
+  # Args:
+  #   folderName: dataiku folder name.
+  #   local_base_path: target path in the local filesystem.
+  #   partition_id: origin partition in the Dataiku Folder (optional).
+  #
+  # Returns:
+  #   Nothing, simply copies the directory
+
+  folder_paths <- dkuManagedFolderPartitionPaths(folderName, partition_id)
+  for (folder_path in folder_paths) {
+    dir_to_create <- dirname(paste0(local_base_path, folder_path))
+    if(!dir.exists(dir_to_create)) {
+      dir.create(dir_to_create, recursive = TRUE)
+    }
+    local_path <- paste0(local_base_path, folder_path)
+    local_file <- file(local_path, "wb")
+    PrintPlugin(paste0("Copying ", folder_path, " to ", local_path))
+    data <- dkuManagedFolderDownloadPath(folderName, folder_path, as = "raw")
+    writeBin(data, local_file)
+    close(local_file)
+  }
+  PrintPlugin("Done copying Dataiku Folder to local filesystem")
 }
 
 SaveForecastingObjects <- function(folderName, versionName, ...) {
@@ -192,7 +218,7 @@ SaveForecastingObjects <- function(folderName, versionName, ...) {
   # Creates a standard directory structure folderpath/(partitionid/)versions/models.RData.
   #
   # Args:
-  #   folderName: dataiku folder name. Has to be on a local filesystem (enforced at recipe creation).
+  #   folderName: dataiku folder name.
   #   partitionDimensionName: partition dimension name specified in the plugin UI.
   #   checkPartitioning: output of a call to the CheckPartitioningSettings function.
   #   versionName: identifier of the version of the forecasting objects
@@ -201,11 +227,26 @@ SaveForecastingObjects <- function(folderName, versionName, ...) {
   # Returns:
   #   Nothing, simply writes RData file to folder
 
-  folderPath <- GetFolderPathWithPartitioning(folderName)
-  # create standard directory structure
+  # saves to a temporary working directory on the local filesystem
+  folderPath <- file.path(getwd(), "models")
   versionPath <- file.path(folderPath, "versions", versionName)
   dir.create(versionPath, recursive = TRUE)
   save(...,  file = file.path(versionPath , "models.RData"))
+
+  # syncs RData file to the local filesystem
+  outputFolderIsPartitioned <- dkuManagedFolderDirectoryBasedPartitioning(folderName)
+  partitionDimensionName <- GetPartitioningDimension()
+  partitioningIsActivated <- partitionDimensionName != ''
+  if(partitioningIsActivated && outputFolderIsPartitioned) {
+    partition_id <- dkuFlowVariable(paste0("DKU_DST_", partitionDimensionName))
+    dkuManagedFolderCopyFromLocalWithPartitioning(folderName, folderPath, partition_id)
+  } else if (partitioningIsActivated && !outputFolderIsPartitioned) {
+    PrintPlugin("Partitioning should be activated on output folder", stop = TRUE)
+  } else {
+    dkuManagedFolderCopyFromLocalWithPartitioning(folderName, folderPath)
+  }
+  # removes RData file on the temporary working directory
+  unlink(folderPath, recursive=TRUE)
 }
 
 LoadForecastingObjects <- function(folderName, versionName = NULL) {
@@ -213,7 +254,7 @@ LoadForecastingObjects <- function(folderName, versionName = NULL) {
   # written by the SaveForecastingObjects function.
   #
   # Args:
-  #   folderName: dataiku folder name. Has to be on a local filesystem (enforced at recipe creation).
+  #   folderName: dataiku folder name.
   #   partitionDimensionName: partition dimension name specified in the plugin UI.
   #   checkPartitioning: output of a call to the CheckPartitioningSettings function.
   #   versionName: identifier of the version of the forecasting objects.
@@ -221,8 +262,23 @@ LoadForecastingObjects <- function(folderName, versionName = NULL) {
   # Returns:
   #   Nothing, simply loads RData file from folder to the global R environment
 
-  folderPath <- GetFolderPathWithPartitioning(folderName)
-  if (is.null(versionName)) {
+  # saves all versions to a temporary working directory on the local filesystem
+  folderPath <- file.path(getwd(), "models")
+  inputFolderIsPartitioned <- dkuManagedFolderDirectoryBasedPartitioning(folderName)
+  partitionDimensionName <- GetPartitioningDimension()
+  partitioningIsActivated <- partitionDimensionName != ''
+  if (partitioningIsActivated && inputFolderIsPartitioned) {
+    partition_id <- dkuFlowVariable(paste0("DKU_DST_", partitionDimensionName))
+    dkuManagedFolderCopyToLocalWithPartitioning(folderName, folderPath, partition_id)
+    folderPath <- file.path(folderPath, partition_id) # partition_id is part of path
+  } else if (partitioningIsActivated && !inputFolderIsPartitioned) {
+    PrintPlugin("Partitioning should be activated on input folder", stop = TRUE)
+  } else {
+    dkuManagedFolderCopyToLocalWithPartitioning(folderName, folderPath)
+  }
+
+  # loads model version from RData file into the R workspace
+  if(is.null(versionName)) {
     lastVersionPath <- max(list.dirs(file.path(folderPath, "versions"), recursive = FALSE))
   } else {
     lastVersionPath <- file.path(folderPath, "versions", versionName)
@@ -240,4 +296,5 @@ LoadForecastingObjects <- function(folderName, versionName = NULL) {
   for (rdataPath in rdataPathList) {
     load(rdataPath, envir = .GlobalEnv)
   }
+    PrintPlugin("Forecasting models loaded!")
 }

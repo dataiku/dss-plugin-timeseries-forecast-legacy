@@ -179,8 +179,11 @@ CleanDataframeWithTimeSeries <- function(df, timeColumn, seriesColumns, granular
   dfOutput <- tibble(!!timeColumn := df[[timeColumn]])
   for(seriesColumn in seriesColumns) {
     ts <- ConvertDataFrameToTimeSeries(df, timeColumn, seriesColumn, granularity)
+    # Replace missing values
     if (missingValues == 'interpolate') {
       ts <- forecast::na.interp(ts)
+    } else if (missingValues == 'previous') {
+      ts <- zoo::na.locf(ts)
     } else if (missingValues == 'impute') {
       missingImputation <- case_when(
         missingImputeWith == 'median' ~ median(ts, na.rm = TRUE),
@@ -189,16 +192,22 @@ CleanDataframeWithTimeSeries <- function(df, timeColumn, seriesColumns, granular
       )
       ts[which(is.na(ts))] <- missingImputation
     }
-    if (outliers == 'interpolate') {
+    # Replace outliers
+    if (outliers != 'no') {
       outliersDetected <- forecast::tsoutliers(ts)
-      ts[outliersDetected$index] <- outliersDetected$replacements
-    } else if (outliers == 'impute') {
-      outliersImputation <- case_when(
-        outliersImputeWith == 'median' ~ median(ts, na.rm = TRUE),
-        outliersImputeWith == 'average' ~ mean(ts, na.rm = TRUE),
-        outliersImputeWith == 'constant' ~ outliersImputeConstant
-      )
-      ts[outliersDetected$index] <- outliersImputation
+      if (outliers == 'interpolate') {
+        ts[outliersDetected$index] <- outliersDetected$replacements
+      } else if (outliers == 'previous') {
+          ts[outliersDetected$index] <- NA
+          ts <- zoo::na.locf(ts)
+      } else if (outliers == 'impute') {
+        outliersImputation <- case_when(
+          outliersImputeWith == 'median' ~ median(ts, na.rm = TRUE),
+          outliersImputeWith == 'average' ~ mean(ts, na.rm = TRUE),
+          outliersImputeWith == 'constant' ~ outliersImputeConstant
+        )
+        ts[outliersDetected$index] <- outliersImputation
+      }
     }
     dfOutput[[seriesColumn]] <- as.numeric(ts)
   }

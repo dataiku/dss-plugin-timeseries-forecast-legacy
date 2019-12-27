@@ -6,6 +6,7 @@
   },
   "kind": "R",
   "selectableFromDataset": "EVALUATION_DATASET_NAME",
+  "selectableFromFolder": "MODEL_FOLDER_NAME",
   "inputRoles": [
     {
       "name": "EVALUATION_DATASET_NAME",
@@ -28,7 +29,7 @@
     },
     {
       "name": "FUTURE_XREG_DATASET_NAME",
-      "label": "Future external regressors (optional)",
+      "label": "Future values of external features (optional)",
       "description": "Dataset with the date column and future values of external regressors if used in the previous \"Train models...\" recipe",
       "arity": "UNARY",
       "required": false,

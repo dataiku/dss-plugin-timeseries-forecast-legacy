@@ -45,16 +45,23 @@ Having said that, it has always been possible to forecast time series in Dataiku
 
 Another way would be for a data scientist to code her own forecasting pipeline using open source R or Python libraries.
 
-These two ways of building a forecasting pipeline require good knowledge of machine learning, forecasting techniques and programming. They are not accessible to a Data Analyst user. With this plugin, we want to offer a simple way to build a forecasting pipeline without code.
+These two ways of building a forecasting pipeline require good knowledge of machine learning, forecasting techniques and programming. They are not accessible to a Data Analyst user. With this plugin, we offer a simple way to build a forecasting pipeline without code.
 
 
-## Installation and usage of the plugin
+## Installation and requirements
 
-Please see [plugin page](https://www.dataiku.com/dss/plugins/info/forecast.html) on Dataiku's website.
+Please see our [official plugin page](https://www.dataiku.com/dss/plugins/info/forecast.html) for installation.
 
-Note that the plugin uses an R code environment so R must be installed and integrated with Dataiku on your machine (version 3.5.0 or above). Anaconda R is not supported.
+Note that the plugin uses an R code environment so R must be installed and integrated with Dataiku on your machine (version 3.5.0 or above). Anaconda R is not supported. It also requires a recent Dataiku DSS version, at least 5.0.5.
 
 ## Changelog
+
+**Version 0.4.0 "beta 4.0" (2019-12)**
+
+* **Kubernetes** and external filesystem support for model storage
+* Keep external regressors in the output dataset of the "Forecast" recipe
+* Add option for filling with previous value in the "Clean" recipe
+* Minor bug fixes and UX enhancements
 
 **Version 0.3.1 "beta 3.1" (2019-10)**
 
@@ -62,7 +69,7 @@ Note that the plugin uses an R code environment so R must be installed and integ
 
 **Version 0.3.0 "beta 3" (2019-05)**
 
-* Remove dependency on rstan and prophet packages.
+* Remove dependency on rstan and prophet packages (thus removing Prophet model support)
 
 **Version 0.2.0 "beta 2" (2019-03)**
 
@@ -81,10 +88,7 @@ Note that the plugin uses an R code environment so R must be installed and integ
      * Add ability to get multiple model forecasts at the same time for ensembling
      * Fan plot of confidence intervals within the horizon
 
-You can also check its development branch ["time-series-forecast"](https://github.com/dataiku/dataiku-contrib/tree/time-series-forecast/time-series-forecast) on the [dataiku-contrib](https://github.com/dataiku/dataiku-contrib) git repo.
-
-You can also ask your questions on our Q&A, [answers.dataiku.com](https://answers.dataiku.com), or open an [Github issue](https://github.com/dataiku/dataiku-contrib/issues).
-
+You can check current roadmap and log feature requests or issues on our [dedicated Github repository](https://github.com/dataiku/dss-plugin-time-series-forecast/issues).
 
 ## Advanced Usages
 
