@@ -39,11 +39,6 @@ dfOutput <- dfInput %>%
     config[["OUTLIERS"]], config[["OUTLIERS_IMPUTE_WITH"]],
     config[["OUTLIERS_IMPUTE_CONSTANT"]])
 
-if (nrow(dfOutput) > 5 * nrow(dfInput) && config[["MISSING_VALUES"]] != 'no') {
-  PrintPlugin(paste0("Resampled data is 5 times longer than input data. ",
-    "Please check time granularity setting."), stop = TRUE)
-}
-
 PrintPlugin("Data preparation stage completed, saving prepared data to output dataset.")
 
 WriteDatasetWithPartitioningColumn(dfOutput, OUTPUT_DATASET_NAME)
