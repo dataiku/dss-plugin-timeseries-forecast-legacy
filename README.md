@@ -104,5 +104,5 @@ A full pipeline would combine ML with forecast models. First, you can predict th
 
 The Forecast plugin is:
 
-   Copyright (c) 2019 Dataiku SAS
+   Copyright (c) 2020 Dataiku SAS
    Licensed under the [MIT License](LICENSE.md).
