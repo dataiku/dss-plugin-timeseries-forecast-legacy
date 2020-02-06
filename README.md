@@ -13,11 +13,13 @@ This plugin offers a set of 3 visual recipes to forecast yearly to hourly time s
 - Training of forecast models of time series data, and evaluation of these models
 - Predicting future values and get historical residuals based on trained models
 
-The following models are available in the recipe:
-- Neural Network
-- Seasonal Trend
-- Exponential Smoothing
-- ARIMA
+The following forecasting models are available:
+- Baseline: [naive/snaive](https://www.rdocumentation.org/packages/forecast/versions/8.10/topics/rwf)
+- Neural Network: [nnetar](https://www.rdocumentation.org/packages/forecast/versions/8.10/topics/nnetar) 
+- ARIMA: [auto.arima](https://www.rdocumentation.org/packages/forecast/versions/8.10/topics/auto.arima)
+- Seasonal Trend: [stlf](https://www.rdocumentation.org/packages/forecast/versions/8.10/topics/forecast.stl)
+- Exponential Smoothing: [ets](https://www.rdocumentation.org/packages/forecast/versions/8.10/topics/ets)
+- State Space: [tbats](https://www.rdocumentation.org/packages/forecast/versions/8.10/topics/tbats) 
 
 This plugin does NOT work on narrow temporal dimensions (data must be at least at the hourly level) and does not provide signal processing techniques (Fourier Transform…).
 
@@ -73,7 +75,7 @@ Note that the plugin uses an R code environment so R must be installed and integ
 
 **Version 0.2.0 "beta 2" (2019-03)**
 
-* Multivariate Forecasting: Added support of external regressors for Neural Network, Prophet and ARIMA models (requires availability of future values of regressors when forecasting).
+* Multivariate Forecasting: Added support of external features/regressors for Neural Network, Prophet and ARIMA models (requires availability of future values of regressors when forecasting).
 
 **Version 0.1.0 "beta 1" (2019-01)**
 
