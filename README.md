@@ -13,7 +13,7 @@ This plugin offers a set of 3 visual recipes to forecast yearly to hourly time s
 - Training of forecast models of time series data, and evaluation of these models
 - Predicting future values and get historical residuals based on trained models
 
-The following forecasting models are available:
+The following models are available from the R forecast package:
 - Baseline: [naive/snaive](https://www.rdocumentation.org/packages/forecast/versions/8.10/topics/rwf)
 - Neural Network: [nnetar](https://www.rdocumentation.org/packages/forecast/versions/8.10/topics/nnetar) 
 - ARIMA: [auto.arima](https://www.rdocumentation.org/packages/forecast/versions/8.10/topics/auto.arima)
@@ -43,7 +43,7 @@ Forecasting is slightly different from "classic" Machine Learning (ML) as availa
 Having said that, it has always been possible to forecast time series in Dataiku using Visual ML with custom work:
 - Feature engineering to get lagged features for each time series, for instance using the Window recipe.
 - If the forecast is for more than one time step ahead: training one Visual ML model for each forecast horizon.
-- Custom code to evaluate the models accuracy and forecast future values for multiple steps.
+- Custom code to evaluate the models' accuracy and forecast future values for multiple steps.
 
 Another way would be for a data scientist to code her own forecasting pipeline using open source R or Python libraries.
 
@@ -96,7 +96,7 @@ You can check current roadmap and log feature requests or issues on our [dedicat
 
 ### Forecasts by Entity
 
-If you want run the recipes to get multiple forecast models per entity (e.g. per product or store), you will need partitioning. That requires to have all datasets partitioned by 1 dimension for the category, using the [discrete dimension](https://doc.dataiku.com/dss/latest/partitions/identifiers.html#discrete-dimension-identifiers) feature in Dataiku. If the input data is not partitioned, you can use a Sync recipe to repartition it, as explained in [this article](https://www.dataiku.com/learn/guide/other/partitioning/partitioning-redispatch.html).
+If you want to run the recipes to get multiple forecast models per entity (e.g. per product or store), you will need partitioning. That requires to have all datasets partitioned by 1 dimension for the category, using the [discrete dimension](https://doc.dataiku.com/dss/latest/partitions/identifiers.html#discrete-dimension-identifiers) feature in Dataiku. If the input data is not partitioned, you can use a Sync recipe to repartition it, as explained in [this article](https://www.dataiku.com/learn/guide/other/partitioning/partitioning-redispatch.html).
 
 ### Combination of Forecast and Machine Learning
 
