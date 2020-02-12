@@ -17,6 +17,8 @@ for(n in names(config)) {
 # Check that partitioning settings are correct if activated
 checkPartitioning <- CheckPartitioningSettings(INPUT_DATASET_NAME)
 
+CheckRVersion()
+
 selectedColumns <- c(config[["TIME_COLUMN"]], config[["SERIES_COLUMNS"]])
 columnClasses <- c("character", rep("numeric", length(config[["SERIES_COLUMNS"]])))
 dfInput <- dkuReadDataset(INPUT_DATASET_NAME, columns = selectedColumns, colClasses = columnClasses)

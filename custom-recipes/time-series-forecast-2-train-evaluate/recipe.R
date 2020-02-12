@@ -19,6 +19,8 @@ for(n in names(config)) {
 # Check that partitioning settings are correct if activated
 checkPartitioning <- CheckPartitioningSettings(INPUT_DATASET_NAME)
 
+CheckRVersion()
+
 # Insert all raw parameters for models from plugin UI into each model KWARGS parameter.
 # This facilitates the generic calling of forecasting functions with
 # a flexible number of keyword arguments.

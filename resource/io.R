@@ -3,49 +3,11 @@ library(jsonlite)
 library(R.utils)
 library(stringr)
 
+source(file.path(dkuCustomRecipeResource(), "utils.R"))
+
 # Set number of digits to use when printing Sys.time.
 # It is needed to store version name in the model folder at millisecond granularity.
 op <- options(digits.secs = 3)
-
-PrintPlugin <- function(message, verbose = TRUE, stop = FALSE) {
-  # Makes it easier to identify custom logging messages from the plugin.
-  if (verbose) {
-    if (stop) {
-      msg <- paste0(
-        "###########################################################\n",
-        "[PLUGIN ERROR] ", message, "\n",
-        "###########################################################"
-      )
-      cat(msg)
-      stop(message)
-    } else {
-      msg <- paste0("[PLUGIN LOG] ", message)
-      message(msg)
-    }
-  }
-}
-
-InferType <- function(x) {
-  # Infers the type of a character object and retains its name.
-  #
-  # Args:
-  #   x: atomic character element.
-  #
-  # Returns:
-  #   Object of inferred type
-  if (length(x) >  1) {
-      return(x) # do not apply inference to vector or list
-  } else {
-      if (!is.na(suppressWarnings(as.numeric(x)))) {
-        xInferred <- as.numeric(x)
-      } else if (!is.na(suppressWarnings(as.logical(x)))) {
-        xInferred <- as.logical(x)
-      } else {
-         xInferred <- as.character(x)
-      }
-      return(xInferred)
-  }
-}
 
 CleanPluginParam <- function(param) {
   # Inters the types of a plugin parameter object.

@@ -22,6 +22,8 @@ if (!config[["INCLUDE_FORECAST"]] && !config[["INCLUDE_HISTORY"]]) {
 # Check that partitioning settings are correct if activated
 checkPartitioning <- CheckPartitioningSettings(EVALUATION_DATASET_NAME)
 
+CheckRVersion()
+
 # Loads all forecasting objects from the model folder
 LoadForecastingObjects(MODEL_FOLDER_NAME)
 

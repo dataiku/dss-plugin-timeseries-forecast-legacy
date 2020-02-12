@@ -56,6 +56,10 @@ Note that the plugin uses an R code environment so R must be installed and integ
 
 ## Changelog
 
+**Version 0.4.1 "beta 4.1" (2020-02)**
+
+* Small bug fixes for edge cases
+
 **Version 0.4.0 "beta 4.0" (2019-12)**
 
 * **Kubernetes** and external filesystem support for model storage
