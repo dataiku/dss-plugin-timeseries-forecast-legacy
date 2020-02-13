@@ -1,4 +1,4 @@
-PLUGIN_VERSION=0.4.0
+PLUGIN_VERSION=0.4.1
 PLUGIN_ID=time-series-forecast
 
 plugin:

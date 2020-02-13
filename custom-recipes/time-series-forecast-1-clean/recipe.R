@@ -17,6 +17,8 @@ for(n in names(config)) {
 # Check that partitioning settings are correct if activated
 checkPartitioning <- CheckPartitioningSettings(INPUT_DATASET_NAME)
 
+CheckRVersion()
+
 selectedColumns <- c(config[["TIME_COLUMN"]], config[["SERIES_COLUMNS"]])
 columnClasses <- c("character", rep("numeric", length(config[["SERIES_COLUMNS"]])))
 dfInput <- dkuReadDataset(INPUT_DATASET_NAME, columns = selectedColumns, colClasses = columnClasses)
@@ -38,11 +40,6 @@ dfOutput <- dfInput %>%
     config[["MISSING_IMPUTE_WITH"]], config[["MISSING_IMPUTE_CONSTANT"]],
     config[["OUTLIERS"]], config[["OUTLIERS_IMPUTE_WITH"]],
     config[["OUTLIERS_IMPUTE_CONSTANT"]])
-
-if (nrow(dfOutput) > 5 * nrow(dfInput) && config[["MISSING_VALUES"]] != 'no') {
-  PrintPlugin(paste0("Resampled data is 5 times longer than input data. ",
-    "Please check time granularity setting."), stop = TRUE)
-}
 
 PrintPlugin("Data preparation stage completed, saving prepared data to output dataset.")
 
