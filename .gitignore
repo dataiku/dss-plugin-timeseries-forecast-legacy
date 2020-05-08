@@ -1,3 +1,8 @@
+# DSS specific stuff
+dist/
+.wlock
+.ts
+
 # History files
 .Rhistory
 .Rapp.history

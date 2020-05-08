@@ -3,7 +3,8 @@
     "version": "0.4.1",
     "meta": {
         "label": "Forecast",
-        "description": "Forecast univariate time series. This plugin covers the full cycle of data cleaning, model training, evaluation and prediction.",
+        "category": "Time Series",
+        "description": "Forecast yearly to hourly time series. This plugin covers the full cycle of data cleaning, model training, evaluation and prediction.",
         "author": "Dataiku (Alex Combessie)",
         "icon": "icon-calendar",
         "licenseInfo": "MIT License",

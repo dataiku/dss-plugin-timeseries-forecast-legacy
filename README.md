@@ -1,6 +1,6 @@
 # Forecast Plugin
 
-The Forecast plugin provides visual recipes in Dataiku DSS to work on time series data to solve forecasting problems.
+The Forecast plugin provides visual recipes in Dataiku DSS to work on yearly to hourly time series data to solve forecasting problems.
 
 >Forecasting is required in many situations: deciding whether to build another power generation plant in the next five years requires forecasts of future demand; scheduling staff in a call centre next week requires forecasts of call volumes; stocking an inventory requires forecasts of stock requirements. Forecasts can be required several years in advance (for the case of capital investments), or only a few minutes beforehand (for telecommunication routing). Whatever the circumstances or time horizons involved, forecasting is an important aid to effective and efficient planning.
 <p style="text-align: right"> - Hyndman, Rob J. and George Athanasopoulos</p>
@@ -15,11 +15,11 @@ This plugin offers a set of 3 visual recipes to forecast yearly to hourly time s
 
 The following models are available from the R forecast package:
 - Baseline: [naive/snaive](https://www.rdocumentation.org/packages/forecast/versions/8.10/topics/rwf)
-- Neural Network: [nnetar](https://www.rdocumentation.org/packages/forecast/versions/8.10/topics/nnetar) 
+- Neural Network: [nnetar](https://www.rdocumentation.org/packages/forecast/versions/8.10/topics/nnetar)
 - ARIMA: [auto.arima](https://www.rdocumentation.org/packages/forecast/versions/8.10/topics/auto.arima)
 - Seasonal Trend: [stlf](https://www.rdocumentation.org/packages/forecast/versions/8.10/topics/forecast.stl)
 - Exponential Smoothing: [ets](https://www.rdocumentation.org/packages/forecast/versions/8.10/topics/ets)
-- State Space: [tbats](https://www.rdocumentation.org/packages/forecast/versions/8.10/topics/tbats) 
+- State Space: [tbats](https://www.rdocumentation.org/packages/forecast/versions/8.10/topics/tbats)
 
 This plugin does NOT work on narrow temporal dimensions (data must be at least at the hourly level) and does not provide signal processing techniques (Fourier Transform…).
 
