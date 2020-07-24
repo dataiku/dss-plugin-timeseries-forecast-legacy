@@ -2,7 +2,7 @@
     "id": "time-series-forecast",
     "version": "0.4.1",
     "meta": {
-        "label": "Time Series Forecast (R)",
+        "label": "Forecast (R)",
         "category": "Time Series",
         "description": "Forecast yearly to hourly time series. This plugin covers the full cycle of data cleaning, model training, evaluation and prediction.",
         "author": "Dataiku (Alex Combessie)",
