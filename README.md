@@ -1,6 +1,6 @@
-# Forecast Plugin
+# Time Series Forecast (R) Plugin
 
-The Forecast plugin provides visual recipes in Dataiku DSS to work on yearly to hourly time series data to solve forecasting problems.
+The Time Series Forecast (R) plugin provides visual recipes in Dataiku DSS to work on yearly to hourly time series data to solve forecasting problems.
 
 >Forecasting is required in many situations: deciding whether to build another power generation plant in the next five years requires forecasts of future demand; scheduling staff in a call centre next week requires forecasts of call volumes; stocking an inventory requires forecasts of stock requirements. Forecasts can be required several years in advance (for the case of capital investments), or only a few minutes beforehand (for telecommunication routing). Whatever the circumstances or time horizons involved, forecasting is an important aid to effective and efficient planning.
 <p style="text-align: right"> - Hyndman, Rob J. and George Athanasopoulos</p>
