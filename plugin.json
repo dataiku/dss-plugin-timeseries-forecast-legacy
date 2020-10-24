@@ -1,14 +1,15 @@
 {
     "id": "time-series-forecast",
-    "version": "0.4.1",
+    "version": "0.5.0",
     "meta": {
         "label": "Forecast (R)",
         "category": "Time Series",
-        "description": "Forecast yearly to hourly time series. This plugin covers the full cycle of data cleaning, model training, evaluation and prediction.",
+        "description": "Forecast yearly to hourly time series using R models",
         "author": "Dataiku (Alex Combessie)",
         "icon": "icon-calendar",
         "licenseInfo": "MIT License",
         "url": "https://www.dataiku.com/dss/plugins/info/forecast.html",
-        "tags": ["Time Series", "Forecasting", "Machine Learning"]
+        "tags": ["Time Series", "Forecasting", "Machine Learning"],
+        "supportLevel": "NOT_SUPPORTED"
     }
 }
