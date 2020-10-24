@@ -24,8 +24,7 @@
       "arity": "UNARY",
       "required": true,
       "acceptsDataset": false,
-      "acceptsManagedFolder": true,
-      "mustBeStrictlyType": "Filesystem"
+      "acceptsManagedFolder": true
     },
     {
       "name": "FUTURE_XREG_DATASET_NAME",
