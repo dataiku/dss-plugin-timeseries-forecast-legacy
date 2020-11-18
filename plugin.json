@@ -2,14 +2,19 @@
     "id": "time-series-forecast",
     "version": "0.5.0",
     "meta": {
-        "label": "Forecast (R)",
+        "label": "Forecast (legacy)",
         "category": "Time Series",
-        "description": "Forecast yearly to hourly time series using R models",
-        "author": "Dataiku (Alex Combessie)",
+        "description": "Forecast univariate time series from yearly to hourly frequency with R models",
+        "author": "Dataiku (Alex COMBESSIE)",
         "icon": "icon-calendar",
+        "iconColor": "grey",
         "licenseInfo": "MIT License",
         "url": "https://www.dataiku.com/dss/plugins/info/forecast.html",
-        "tags": ["Time Series", "Forecasting", "Machine Learning"],
+        "tags": [
+            "Time Series",
+            "Forecasting",
+            "Machine Learning"
+        ],
         "supportLevel": "NOT_SUPPORTED"
     }
 }

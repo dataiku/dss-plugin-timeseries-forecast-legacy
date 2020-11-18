@@ -2,7 +2,8 @@
     "meta": {
         "label": "1. Clean time series",
         "description": "Resample, aggregate and clean the time series from missing values and outliers",
-        "icon": "icon-calendar-empty"
+        "icon": "icon-calendar-empty",
+        "iconColor": "grey"
     },
     "kind": "R",
     "selectableFromDataset": "INPUT_DATASET_NAME",
