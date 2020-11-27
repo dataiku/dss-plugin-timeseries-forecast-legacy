@@ -1,4 +1,4 @@
-# Time Series Forecast (R) Plugin
+# Time Series Forecast Plugin (Legacy)
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/dataiku/dss-plugin-time-series-forecast) ![Build status](https://img.shields.io/badge/build-passing-brightgreen) ![Support level](https://img.shields.io/badge/support-Unsupported-orange)
 
