@@ -255,7 +255,7 @@ EvaluateModelsCrossval <- function(ts, df, xreg = NULL, modelList, modelParamete
 }
 
 EvaluateModels <- function(ts, df, xreg = NULL, modelList, modelParameterList, evalStrategy,
-  horizon, granularity, initial = NULL, period = NULL) {
+  horizon, granularity, initial = NULL, period = NULL, trainingTimes = NULL) {
   # Evaluates multiple forecast models on a time series according to
   # the specified evaluation strategy.
   #
@@ -272,10 +272,12 @@ EvaluateModels <- function(ts, df, xreg = NULL, modelList, modelParameterList, e
   #   granularity: character string (one of "year", "quarter", "month", "week", "day", "hour").
   #   initial: number of periods in the initial train set.
   #   period: number of periods between cutoff dates.
+  #   trainingTimes: training times in seconds (optional)
   #
   # Returns:
   #   Data.frame with the evaluation of all models' errors
 
+  modelList <- modelList[names(modelList) %in% AVAILABLE_MODEL_NAME_LIST]
   if (evalStrategy == 'split') {
     errorDf <- EvaluateModelsSplit(ts, df, xreg, modelList, modelParameterList,
       horizon, granularity)
@@ -283,10 +285,16 @@ EvaluateModels <- function(ts, df, xreg = NULL, modelList, modelParameterList, e
     errorDf <- EvaluateModelsCrossval(ts, df, xreg, modelList, modelParameterList,
       horizon, granularity, initial, period)
   }
+  trainingTimesDf <- data.frame()
+  if (!is.null(trainingTimes)) {
+    trainingTimesDf <- data.frame(
+      model=names(trainingTimes), training_time=unlist(trainingTimes))
+  }
   errorDf <- errorDf %>%
     select_(.dots = c("model", "ME", "RMSE", "MAE", "MPE", "MAPE")) %>%
     rename(mean_error = ME, root_mean_square_error = RMSE, mean_absolute_error = MAE,
       mean_percentage_error = MPE, mean_absolute_percentage_error = MAPE) %>%
+    left_join(trainingTimesDf, by="model") %>%
     mutate(model = recode(model, !!!MODEL_UI_NAME_LIST)) %>%
     mutate_all(funs(ifelse(is.infinite(.), NA, .)))
   errorDf[["evaluation_horizon"]] <- as.integer(horizon)
