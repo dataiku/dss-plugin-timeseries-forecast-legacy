@@ -138,7 +138,7 @@ PrintPlugin(paste0("Evaluation stage starting with ", config[["EVAL_STRATEGY"]],
 
 errorDf <- EvaluateModels(ts, df, externalRegressorMatrix, modelList, modelParameterList,
   config[["EVAL_STRATEGY"]], config[["EVAL_HORIZON"]],  config[["GRANULARITY"]],
-  config[["CROSSVAL_INITIAL"]], config[["CROSSVAL_PERIOD"]])
+  config[["CROSSVAL_INITIAL"]], config[["CROSSVAL_PERIOD"]], trainingTimes)
 errorDf[["training_date"]] <- strftime(versionName, dkuDateFormat)
 
 PrintPlugin("Evaluation stage completed, saving evaluation results to output dataset.")
