@@ -4,6 +4,8 @@
 
 This Dataiku DSS plugin provides recipes to work on yearly to hourly time series data to solve forecasting problems using R models.
 
+⚠️ **Starting with version 0.5, this plugin will be considered as legacy. We will maintain it only to fix bugs. For latest features and models, we recommend forecasting with the new [Forecast plugin](https://github.com/dataiku/dss-plugin-timeseries-forecast).**
+
 > Forecasting is required in many situations: deciding whether to build another power generation plant in the next five years requires forecasts of future demand; scheduling staff in a call centre next week requires forecasts of call volumes; stocking an inventory requires forecasts of stock requirements. Forecasts can be required several years in advance (for the case of capital investments), or only a few minutes beforehand (for telecommunication routing). Whatever the circumstances or time horizons involved, forecasting is an important aid to effective and efficient planning.
 
 <p style="text-align: right"> - Hyndman, Rob J. and George Athanasopoulos</p>
