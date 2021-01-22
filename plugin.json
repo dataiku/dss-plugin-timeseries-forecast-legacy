@@ -9,7 +9,7 @@
         "icon": "icon-calendar",
         "iconColor": "grey",
         "licenseInfo": "MIT License",
-        "url": "https://www.dataiku.com/dss/plugins/info/timeseries-forecast-legacy.html",
+        "url": "https://www.dataiku.com/product/plugins/time-series-forecast/",
         "tags": [
             "Time Series",
             "Forecasting",
