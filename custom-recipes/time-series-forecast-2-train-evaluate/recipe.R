@@ -78,6 +78,10 @@ if(length(intersect(config[["EXT_SERIES_COLUMNS"]], forbiddenExternalColumnNames
                 "', please rename them.")
   PrintPlugin(errorMsg, stop = TRUE)
 }
+if ("" %in% config[["EXT_SERIES_COLUMNS"]]) {
+  PrintPlugin(paste("External features parameter has a blank column.",
+  "please remove it or add a valid column."), stop = TRUE) 
+}
 columnClasses <- c("character", rep("numeric", 1 + length(config[["EXT_SERIES_COLUMNS"]])))
 df <- dkuReadDataset(INPUT_DATASET_NAME, columns = selectedColumns, colClasses = columnClasses)
 
