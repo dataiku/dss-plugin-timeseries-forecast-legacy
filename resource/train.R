@@ -148,22 +148,27 @@ TrainForecastingModels <- function(ts, df, xreg = NULL, modelParameterList,
     if(modelName %in% MODELS_WITH_XREG_SUPPORT) {
       modelParameters[["kwargs"]][["xreg"]] <- xreg
     }
-    PrintPlugin(paste0(modelName," training starting with parameters"), verbose)
+    modelNameUI <- MODEL_UI_NAME_LIST[[modelName]]
+    PrintPlugin(paste(modelNameUI, "model training starting with parameters"), verbose)
     if (verbose) {
       print(modelParameters[["kwargs"]][-which(names(modelParameters[["kwargs"]]) %in% c("y", "xreg"))])
     }
     startTime <- Sys.time()
-    modelList[[modelName]] <- R.utils::doCall(
-      .fcn = modelParameters[["modelFunction"]],
-      args = modelParameters[["kwargs"]],
-      .ignoreUnusedArgs = FALSE
-    )
+    check = tryCatch({
+        modelList[[modelName]] <- R.utils::doCall(
+          .fcn = modelParameters[["modelFunction"]],
+          args = modelParameters[["kwargs"]],
+          .ignoreUnusedArgs = FALSE
+        )
+      }, error = function(e) {
+          PrintPlugin(paste(modelNameUI, "model training failed. Error message:", e), stop=TRUE)
+      })
     endTime <- Sys.time()
     if (!refit) {
       modelList[["trainingTimes"]][[modelName]] = endTime - startTime
     }
-    PrintPlugin(paste0(modelName," training completed after ",
-              round(endTime - startTime, 1), " seconds"), verbose)
+    PrintPlugin(paste(modelNameUI, " model training completed after", 
+      round(endTime - startTime, 1), "seconds"), verbose)
   }
   return(modelList)
 }

@@ -80,7 +80,7 @@ if(length(intersect(config[["EXT_SERIES_COLUMNS"]], forbiddenExternalColumnNames
 }
 if ("" %in% config[["EXT_SERIES_COLUMNS"]]) {
   PrintPlugin(paste("External features parameter has a blank column.",
-  "please remove it or add a valid column."), stop = TRUE) 
+  "Please remove it or add a valid column."), stop = TRUE) 
 }
 if (trimws(config[["TIME_COLUMN"]]) == "" || is.null(config[["TIME_COLUMN"]])) {
   PrintPlugin("Please specify the Time column parameter.", stop = TRUE) 
