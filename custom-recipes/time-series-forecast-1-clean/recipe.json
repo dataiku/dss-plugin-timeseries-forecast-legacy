@@ -1,6 +1,6 @@
 {
     "meta": {
-        "label": "1. Clean time series",
+        "label": "0. Clean time series",
         "description": "Resample, aggregate and clean the time series from missing values and outliers",
         "icon": "icon-calendar-empty",
         "iconColor": "grey",
@@ -42,10 +42,7 @@
             "description": "Must be a parsed date. Use a Prepare recipe to parse the date if needed.",
             "type": "COLUMN",
             "columnRole": "INPUT_DATASET_NAME",
-            "mandatory": true,
-            "allowedColumnTypes": [
-                "date"
-            ]
+            "mandatory": true
         },
         {
             "name": "SERIES_COLUMNS",

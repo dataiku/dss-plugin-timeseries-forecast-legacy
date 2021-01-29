@@ -1,9 +1,10 @@
 {
     "meta": {
-        "label": "2. Train models and evaluate errors on historical data",
-        "description": "Train forecast models and evaluate them on historical data using temporal split or cross-validation",
+        "label": "1. Train and evaluate forecasting models",
+        "description": "Train forecasting models and evaluate their performance on historical data",
         "icon": "icon-calendar",
-        "iconColor": "grey"
+        "iconColor": "grey",
+        "displayOrderRank": 2
     },
     "kind": "R",
     "selectableFromDataset": "INPUT_DATASET_NAME",
@@ -41,36 +42,20 @@
         {
             "type": "SEPARATOR",
             "name": "separator_input",
-            "label": "Input data"
+            "label": "Input parameters"
         },
         {
             "name": "TIME_COLUMN",
             "label": "Time column",
-            "description": "Must be of parsed DATE type.",
+            "description": "Must be a parsed date",
             "type": "COLUMN",
             "columnRole": "INPUT_DATASET_NAME",
             "mandatory": true
-        },
-        {
-            "name": "SERIES_COLUMN",
-            "label": "Target column",
-            "description": "Series to forecast - Must be of NUMERIC type",
-            "type": "COLUMN",
-            "columnRole": "INPUT_DATASET_NAME",
-            "mandatory": true
-        },
-        {
-            "name": "EXT_SERIES_COLUMNS",
-            "label": "External features",
-            "description": "Optional external regressors - Must be of NUMERIC type",
-            "type": "COLUMNS",
-            "columnRole": "INPUT_DATASET_NAME",
-            "mandatory": false
         },
         {
             "name": "GRANULARITY",
-            "label": "Time granularity",
-            "description": "How often data is sampled",
+            "label": "Frequency",
+            "description": "Frequency of your historical data",
             "type": "SELECT",
             "mandatory": true,
             "selectChoices": [
@@ -102,26 +87,43 @@
             "defaultValue": "day"
         },
         {
+            "name": "SERIES_COLUMN",
+            "label": "Target column",
+            "description": "Must be numeric",
+            "type": "COLUMN",
+            "columnRole": "INPUT_DATASET_NAME",
+            "mandatory": true,
+            "allowedColumnTypes": [
+                "tinyint",
+                "smallint",
+                "int",
+                "bigint",
+                "float",
+                "double"
+            ]
+        },
+        {
             "name": "separator_modeling",
             "label": "Modeling",
             "type": "SEPARATOR"
         },
         {
             "name": "AUTOML",
-            "label": "Forecasting style",
+            "label": "Forecasting mode",
             "type": "SELECT",
             "mandatory": true,
             "selectChoices": [
                 {
                     "value": "auto",
-                    "label": "Automated mode"
+                    "label": "AutoML"
                 },
                 {
                     "value": "expert",
-                    "label": "Expert mode"
+                    "label": "Expert"
                 }
             ],
-            "defaultValue": "auto"
+            "defaultValue": "auto",
+            "description": "AutoML to let Dataiku choose model parameters or Expert to have full control"
         },
         {
             "type": "SEPARATOR",
@@ -130,7 +132,7 @@
         {
             "name": "NAIVE_MODEL_ACTIVATED",
             "label": "- Baseline",
-            "description": "Based on the naive/snaive implementation in R \"forecast\" package",
+            "description": "Based on the naive/snaive implementation of the R \"forecast\" package",
             "type": "BOOLEAN",
             "defaultValue": true,
             "mandatory": true
@@ -171,7 +173,7 @@
         // {
         //   "name": "PROPHET_MODEL_ACTIVATED",
         //   "label": "- Prophet",
-        //   "description": "Based on the Prophet implementation in R \"prophet\" package.",
+        //   "description": "Based on the Prophet implementation of the R \"prophet\" package.",
         //   "type": "BOOLEAN",
         //   "defaultValue": true,
         //   "mandatory": true
@@ -217,7 +219,7 @@
         //   "name": "PROPHET_MODEL_KWARGS",
         //   "type": "MAP",
         //   "label": "↳  additional parameters",
-        //   "description": "Optional additional parameters cf. cran.r-project.org/web/packages/prophet/prophet.pdf",
+        //   "description": "Optional keyword arguments from cran.r-project.org/web/packages/prophet/prophet.pdf",
         //   "visibilityCondition": "model.AUTOML=='expert' && model.PROPHET_MODEL_ACTIVATED",
         //   "mandatory": false
         // },
@@ -228,7 +230,7 @@
         {
             "name": "NEURALNETWORK_MODEL_ACTIVATED",
             "label": "- Neural Network",
-            "description": "Based on the nnetar implementation in R \"forecast\" package.",
+            "description": "Based on the nnetar implementation of the R \"forecast\" package.",
             "type": "BOOLEAN",
             "defaultValue": true,
             "mandatory": true
@@ -264,7 +266,7 @@
             "name": "NEURALNETWORK_MODEL_KWARGS",
             "type": "MAP",
             "label": "↳ additional parameters",
-            "description": "Optional additional parameters cf. www.rdocumentation.org/packages/forecast/versions/8.4/topics/nnetar",
+            "description": "Optional keyword arguments from www.rdocumentation.org/packages/forecast/versions/8.13/topics/nnetar",
             "visibilityCondition": "model.AUTOML=='expert' && model.NEURALNETWORK_MODEL_ACTIVATED",
             "mandatory": false
         },
@@ -274,8 +276,8 @@
         },
         {
             "name": "ARIMA_MODEL_ACTIVATED",
-            "label": "- ARIMA",
-            "description": "Based on the auto.arima implementation in R \"forecast\" package.\nWARNING: slow for long time series (1000+ records)",
+            "label": "- AutoARIMA",
+            "description": "Based on the auto.arima implementation of the R \"forecast\" package.\nWARNING: slow for long time series (1000+ records)",
             "type": "BOOLEAN",
             "defaultValue": false,
             "mandatory": true
@@ -292,8 +294,8 @@
         {
             "name": "ARIMA_MODEL_KWARGS",
             "type": "MAP",
-            "label": "↳  additional parameters",
-            "description": "Optional additional parameters cf. www.rdocumentation.org/packages/forecast/versions/8.4/topics/auto.arima",
+            "label": "↳ additional parameters",
+            "description": "Optional keyword arguments from www.rdocumentation.org/packages/forecast/versions/8.13/topics/auto.arima",
             "visibilityCondition": "model.AUTOML=='expert' && model.ARIMA_MODEL_ACTIVATED",
             "mandatory": false
         },
@@ -304,7 +306,7 @@
         {
             "name": "SEASONALTREND_MODEL_ACTIVATED",
             "label": "- Seasonal Trend",
-            "description": "Based on the stlf implementation in R \"forecast\" package. WARNING: may not converge for non-seasonal data.",
+            "description": "Based on the stlf implementation of the R \"forecast\" package. WARNING: may not converge for non-seasonal data.",
             "type": "BOOLEAN",
             "defaultValue": false,
             "mandatory": true
@@ -313,7 +315,7 @@
             "name": "SEASONALTREND_MODEL_KWARGS",
             "type": "MAP",
             "label": "↳ additional parameters",
-            "description": "Optional additional parameters cf. www.rdocumentation.org/packages/forecast/versions/8.4/topics/forecast.stl",
+            "description": "Optional keyword arguments from www.rdocumentation.org/packages/forecast/versions/8.13/topics/forecast.stl",
             "visibilityCondition": "model.AUTOML=='expert' && model.SEASONALTREND_MODEL_ACTIVATED",
             "mandatory": false
         },
@@ -324,7 +326,7 @@
         {
             "name": "EXPONENTIALSMOOTHING_MODEL_ACTIVATED",
             "label": "- Exponential Smoothing",
-            "description": "Based on the ets implementation in R \"forecast\" package.  WARNING: slow for long time series (1000+ records)",
+            "description": "Based on the ets implementation of the R \"forecast\" package.  WARNING: slow for long time series (1000+ records)",
             "type": "BOOLEAN",
             "defaultValue": false,
             "mandatory": true
@@ -411,7 +413,7 @@
             "name": "EXPONENTIALSMOOTHING_MODEL_KWARGS",
             "type": "MAP",
             "label": "↳ additional parameters",
-            "description": "Optional additional parameters cf. www.rdocumentation.org/packages/forecast/versions/8.4/topics/ets",
+            "description": "Optional keyword arguments from www.rdocumentation.org/packages/forecast/versions/8.13/topics/ets",
             "visibilityCondition": "model.AUTOML=='expert' && model.EXPONENTIALSMOOTHING_MODEL_ACTIVATED",
             "mandatory": false
         },
@@ -422,7 +424,7 @@
         {
             "name": "STATESPACE_MODEL_ACTIVATED",
             "label": "- State Space",
-            "description": "Based on the tbats implementation in R \"forecast\" package.\nWARNING: slow for long time series (1000+ records)",
+            "description": "Based on the tbats implementation of the R \"forecast\" package.\nWARNING: slow for long time series (1000+ records)",
             "type": "BOOLEAN",
             "defaultValue": false,
             "mandatory": true
@@ -430,26 +432,27 @@
         {
             "name": "STATESPACE_MODEL_KWARGS",
             "type": "MAP",
-            "label": "↳  additional parameters",
-            "description": "Optional additional parameters cf. www.rdocumentation.org/packages/forecast/versions/8.4/topics/tbats",
+            "label": "↳ additional parameters",
+            "description": "Optional keyword arguments from www.rdocumentation.org/packages/forecast/versions/8.13/topics/tbats",
             "mandatory": false,
             "visibilityCondition": "model.AUTOML=='expert' && model.STATESPACE_MODEL_ACTIVATED"
         },
         {
             "name": "separator_evaluation",
-            "label": "Error Evaluation",
-            "type": "SEPARATOR"
+            "label": "Evaluation",
+            "type": "SEPARATOR",
+            "description": "Split to evaluate performance metrics. The final model will be retrained on the entire sample."
         },
         {
             "name": "EVAL_STRATEGY",
-            "label": "Strategy",
+            "label": "Splitting strategy",
             "type": "SELECT",
             "mandatory": true,
-            "description": "Time-based split or cross-validation based on R \"Prophet\" method (slower)",
+            "description": "Time-based train/test split or cross-validation at multiple cutoffs (slower)",
             "selectChoices": [
                 {
                     "value": "split",
-                    "label": "Train/Test Split"
+                    "label": "Time-based Split"
                 },
                 {
                     "value": "crossval",
@@ -460,8 +463,8 @@
         },
         {
             "name": "EVAL_HORIZON",
-            "label": "Horizon",
-            "description": "Number of time steps to evaluate the forecast error",
+            "label": "Forecasting horizon",
+            "description": "Number of future values to predict when evaluating performance metrics",
             "type": "INT",
             "defaultValue": 10,
             "mandatory": true
@@ -483,6 +486,35 @@
             "mandatory": false,
             "defaultValue": -1,
             "visibilityCondition": "model.EVAL_STRATEGY =='crossval'"
+        },
+        {
+            "name": "advanced_options_separator",
+            "label": "Advanced",
+            "type": "SEPARATOR"
+        },
+        {
+            "name": "external_feature_activated",
+            "label": "Add external features",
+            "description": "Optional numeric features for exogenous time-dependent factors e.g., holidays, special events",
+            "type": "BOOLEAN",
+            "defaultValue": false
+        },
+        {
+            "name": "EXT_SERIES_COLUMNS",
+            "label": "External feature columns",
+            "description": "⚠️  Futures values of external features will be required to forecast",
+            "type": "COLUMNS",
+            "columnRole": "INPUT_DATASET_NAME",
+            "mandatory": false,
+            "visibilityCondition": "model.external_feature_activated",
+            "allowedColumnTypes": [
+                "tinyint",
+                "smallint",
+                "int",
+                "bigint",
+                "float",
+                "double"
+            ]
         }
     ],
     "resourceKeys": []
