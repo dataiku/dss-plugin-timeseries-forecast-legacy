@@ -10,7 +10,7 @@ Documentation: https://www.dataiku.com/product/plugins/time-series-forecast-lega
 
 ## Changelog
 
-**Version 0.5.0 (2021-01)**
+**Version 0.5.0 (2021-02)**
 
 - Improve error messages
 - Harmonize UX with the new Forecast plugin
