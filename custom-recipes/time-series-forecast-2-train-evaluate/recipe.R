@@ -97,10 +97,15 @@ names(df) <- c('ds','y', config[["EXT_SERIES_COLUMNS"]]) # Converts df to generi
 #   df[['cap']] <- config[["PROPHET_MODEL_MAXIMUM"]]
 # }
 
+# Check enough values in the train set
+if (nrow(df) - config[["EVAL_HORIZON"]] < 4) {
+  PrintPlugin(paste("Less than 4 data points to train models during the evaluation phase.",
+    "Please decrease the Horizon parameter."), stop = TRUE)
+}
 # Additional check on the number of rows of the input for the cross-validation evaluation strategy
 if (config[["EVAL_STRATEGY"]] == "crossval" && (config[["EVAL_HORIZON"]] + config[["CROSSVAL_INITIAL"]] > nrow(df))) {
-  PrintPlugin(paste("Less data than horizon after initial cross-validation window.",
-    "Make horizon or initial shorter."), stop = TRUE)
+  PrintPlugin(paste("Less data than Horizon after initial cross-validation window.",
+    "Please decrease Horizon and/or Initial training parameters."), stop = TRUE)
 }
 
 # Converts df to msts time series format
