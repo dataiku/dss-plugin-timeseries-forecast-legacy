@@ -159,6 +159,9 @@ TrainForecastingModels <- function(ts, df, xreg = NULL, modelParameterList,
       .ignoreUnusedArgs = FALSE
     )
     endTime <- Sys.time()
+    if (!refit) {
+      modelList[["trainingTimes"]][[modelName]] = endTime - startTime
+    }
     PrintPlugin(paste0(modelName," training completed after ",
               round(endTime - startTime, 1), " seconds"), verbose)
   }
