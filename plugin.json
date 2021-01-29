@@ -15,6 +15,7 @@
             "Forecasting",
             "Machine Learning"
         ],
-        "supportLevel": "NOT_SUPPORTED"
+        "supportLevel": "NOT_SUPPORTED",
+        "supported": false
     }
 }
