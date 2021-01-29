@@ -82,6 +82,12 @@ if ("" %in% config[["EXT_SERIES_COLUMNS"]]) {
   PrintPlugin(paste("External features parameter has a blank column.",
   "please remove it or add a valid column."), stop = TRUE) 
 }
+if (trimws(config[["TIME_COLUMN"]]) == "" || is.null(config[["TIME_COLUMN"]])) {
+  PrintPlugin("Please specify the Time column parameter.", stop = TRUE) 
+}
+if (trimws(config[["SERIES_COLUMN"]]) == "" || is.null(config[["SERIES_COLUMN"]])) {
+  PrintPlugin("Please specify the Target column parameter.", stop = TRUE) 
+}
 columnClasses <- c("character", rep("numeric", 1 + length(config[["EXT_SERIES_COLUMNS"]])))
 df <- dkuReadDataset(INPUT_DATASET_NAME, columns = selectedColumns, colClasses = columnClasses)
 
