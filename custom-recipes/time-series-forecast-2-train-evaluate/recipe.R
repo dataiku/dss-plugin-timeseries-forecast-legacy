@@ -56,6 +56,9 @@ for(modelName in AVAILABLE_MODEL_NAME_LIST) {
     modelParameterList[[modelName]][["kwargs"]] <- as.list(config[[paste0(modelName,"_KWARGS")]])
   }
 }
+if (length(modelParameterList) == 0) {
+  PrintPlugin("Please select at least one model to train.", stop = TRUE)
+}
 
 # Handles default options for the cross-validation evaluation strategy
 if (config[["CROSSVAL_INITIAL"]] == -1) {
