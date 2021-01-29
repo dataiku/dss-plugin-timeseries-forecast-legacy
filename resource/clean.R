@@ -119,6 +119,8 @@ PrepareDataframeWithTimeSeries <- function(df, timeColumn, seriesColumns,
   # Returns:
   #   data frame with the prepared time series
 
+  # Drop NA cases in the timeColumn
+  df <- df[!is.na(df[[timeColumn]]),]
   if (granularity == "hour") {
     df[[timeColumn]] <- as.POSIXct(df[[timeColumn]], tryFormats = alternativeDateFormats, tz = "UTC")
   } else {
