@@ -57,11 +57,11 @@
         },
         {
             "name": "MODEL_SELECTION",
-            "label": "Mode",
+            "label": "Selection mode",
             "type": "SELECT",
             "mandatory": true,
             "defaultValue": "auto",
-            "description": "Select manually or automatically select model with lowest error",
+            "description": "Select manually or automatically select the best-performing model",
             "selectChoices": [
                 {
                     "value": "auto",
@@ -75,7 +75,7 @@
         },
         {
             "name": "ERROR_METRIC",
-            "label": "Error metric",
+            "label": "Performance metric",
             "type": "SELECT",
             "mandatory": false,
             "defaultValue": "mean_absolute_error",
@@ -97,7 +97,7 @@
         },
         {
             "name": "SELECTED_MODEL",
-            "label": "Model to use",
+            "label": "Model name",
             "type": "SELECT",
             "mandatory": false,
             "defaultValue": "NAIVE_MODEL",
@@ -139,38 +139,38 @@
             "type": "SEPARATOR"
         },
         {
-            "name": "INCLUDE_HISTORY",
-            "label": "Include history",
-            "description": "Historical values, one-step forecasts and residuals (historical value - forecast)",
-            "type": "BOOLEAN",
-            "defaultValue": true,
-            "mandatory": true
-        },
-        {
             "name": "INCLUDE_FORECAST",
             "label": "Include forecast",
-            "description": "Forecasts along the horizon",
+            "description": "Future values and confidence bounds",
             "type": "BOOLEAN",
             "defaultValue": true,
             "mandatory": true
         },
         {
             "name": "FORECAST_HORIZON",
-            "label": "Forecast horizon",
+            "label": "Forecasting horizon",
             "type": "INT",
             "mandatory": true,
             "defaultValue": 10,
-            "description": "in number of time steps  - will be overriden if you provided external regressors",
+            "description": "Number of future values to predict - overriden if you specified external features",
             "visibilityCondition": "model.INCLUDE_FORECAST"
         },
         {
             "name": "CONFIDENCE_INTERVAL",
-            "label": "Confidence interval",
+            "label": "Confidence interval (%)",
             "type": "INT",
             "mandatory": true,
             "defaultValue": 95,
-            "description": "%",
+            "description": "Compute lower and upper confidence bound forecasts",
             "visibilityCondition": "model.INCLUDE_FORECAST"
+        },
+        {
+            "name": "INCLUDE_HISTORY",
+            "label": "Include history",
+            "description": "Historical values, one-step forecasts and residuals (historical value - one-step forecast)",
+            "type": "BOOLEAN",
+            "defaultValue": true,
+            "mandatory": true
         }
     ],
     "resourceKeys": []
