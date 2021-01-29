@@ -11,7 +11,7 @@
     "inputRoles": [
         {
             "name": "INPUT_DATASET_NAME",
-            "label": "Input dataset",
+            "label": "Historical dataset",
             "arity": "UNARY",
             "required": true,
             "acceptsDataset": true,
@@ -20,22 +20,22 @@
     ],
     "outputRoles": [
         {
-            "name": "EVALUATION_DATASET_NAME",
-            "label": "Evaluation results",
-            "description": "Dataset with the error evaluation results on historical data",
-            "arity": "UNARY",
-            "required": true,
-            "acceptsDataset": true,
-            "acceptsFolder": false
-        },
-        {
             "name": "MODEL_FOLDER_NAME",
-            "label": "Trained models folder",
-            "description": "Folder to save the trained models as RData files",
+            "label": "Trained model folder",
+            "description": "Folder to save trained forecasting models",
             "arity": "UNARY",
             "required": true,
             "acceptsDataset": false,
             "acceptsManagedFolder": true
+        },
+        {
+            "name": "EVALUATION_DATASET_NAME",
+            "label": "Performance metrics dataset",
+            "description": "Performance metrics of forecasting models evaluated on a split of the historical dataset",
+            "arity": "UNARY",
+            "required": true,
+            "acceptsDataset": true,
+            "acceptsFolder": false
         }
     ],
     "params": [
