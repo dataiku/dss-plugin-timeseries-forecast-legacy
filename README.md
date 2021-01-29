@@ -4,11 +4,17 @@
 
 This Dataiku DSS plugin provides recipes to work on yearly to hourly time series data to solve forecasting problems using R models.
 
-⚠️ **Starting with version 0.5, this plugin will be considered as "legacy". We will maintain it only to fix bugs. For the latest features and models, we recommend forecasting with the new [Forecast plugin](https://github.com/dataiku/dss-plugin-timeseries-forecast).**
+⚠️ Starting with version 0.5, this plugin will be considered as "legacy". We will maintain it only to fix bugs. For the latest features and models, we recommend using the [new Forecast plugin](https://www.dataiku.com/product/plugins/timeseries-forecast/).**
 
-Documentation: https://www.dataiku.com/product/plugins/time-series-forecast/
+Documentation: https://www.dataiku.com/product/plugins/time-series-forecast-legacy/
 
 ## Changelog
+
+**Version 0.5.0 (2021-01)**
+
+- Improve error messages
+- Harmonize UX with the new Forecast plugin
+- Mark as Legacy
 
 **Version 0.4.1 (2020-02)**
 
