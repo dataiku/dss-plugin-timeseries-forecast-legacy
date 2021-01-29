@@ -1,36 +1,37 @@
 {
     "meta": {
-        "label": "3. Forecast future values and get historical residuals",
-        "description": "Use previously trained models to predict future values and/or get historical residuals",
+        "label": "2. Forecast future values and get historical residuals",
+        "description": "Use trained forecasting models to predict future values and/or get historical residuals",
         "icon": "icon-signal",
-        "iconColor": "grey"
+        "iconColor": "grey",
+        "displayOrderRank": 3
     },
     "kind": "R",
     "selectableFromDataset": "EVALUATION_DATASET_NAME",
     "selectableFromFolder": "MODEL_FOLDER_NAME",
     "inputRoles": [
         {
+            "name": "MODEL_FOLDER_NAME",
+            "label": "Trained model folder",
+            "description": "Folder containing models saved by the \"Train and evaluate forecasting models\" recipe",
+            "arity": "UNARY",
+            "required": true,
+            "acceptsDataset": false,
+            "acceptsFolder": true
+        },
+        {
             "name": "EVALUATION_DATASET_NAME",
-            "label": "Evaluation results",
-            "description": "Dataset with the error evaluation results computed by the previous \"Train models...\" recipe",
+            "label": "Performance metrics dataset",
+            "description": "Dataset with performance metrics computed by the \"Train and evaluate forecasting models\" recipe",
             "arity": "UNARY",
             "required": true,
             "acceptsDataset": true,
             "acceptsFolder": false
         },
         {
-            "name": "MODEL_FOLDER_NAME",
-            "label": "Trained models folder",
-            "description": "Folder with trained models saved by the previous \"Train models...\" recipe",
-            "arity": "UNARY",
-            "required": true,
-            "acceptsDataset": false,
-            "acceptsManagedFolder": true
-        },
-        {
             "name": "FUTURE_XREG_DATASET_NAME",
-            "label": "Future values of external features (optional)",
-            "description": "Dataset with the date column and future values of external regressors if used in the previous \"Train models...\" recipe",
+            "label": "Optional - Dataset with future values of external features",
+            "description": "Only required if you specified external features in the \"Train and evaluate forecasting models\" recipe",
             "arity": "UNARY",
             "required": false,
             "acceptsDataset": true,
@@ -41,7 +42,7 @@
         {
             "name": "OUTPUT_DATASET_NAME",
             "label": "Forecast dataset",
-            "description": "Output dataset with future values and/or historical residuals",
+            "description": "Dataset with predicted future values and/or historical residuals",
             "arity": "UNARY",
             "required": true,
             "acceptsDataset": true,
@@ -56,11 +57,11 @@
         },
         {
             "name": "MODEL_SELECTION",
-            "label": "Mode",
+            "label": "Selection mode",
             "type": "SELECT",
             "mandatory": true,
             "defaultValue": "auto",
-            "description": "Select manually or automatically select model with lowest error",
+            "description": "Select manually or automatically select the best-performing model",
             "selectChoices": [
                 {
                     "value": "auto",
@@ -74,7 +75,7 @@
         },
         {
             "name": "ERROR_METRIC",
-            "label": "Error metric",
+            "label": "Performance metric",
             "type": "SELECT",
             "mandatory": false,
             "defaultValue": "mean_absolute_error",
@@ -96,7 +97,7 @@
         },
         {
             "name": "SELECTED_MODEL",
-            "label": "Model to use",
+            "label": "Model name",
             "type": "SELECT",
             "mandatory": false,
             "defaultValue": "NAIVE_MODEL",
@@ -138,38 +139,38 @@
             "type": "SEPARATOR"
         },
         {
-            "name": "INCLUDE_HISTORY",
-            "label": "Include history",
-            "description": "Historical values, one-step forecasts and residuals (historical value - forecast)",
-            "type": "BOOLEAN",
-            "defaultValue": true,
-            "mandatory": true
-        },
-        {
             "name": "INCLUDE_FORECAST",
             "label": "Include forecast",
-            "description": "Forecasts along the horizon",
+            "description": "Future values and confidence bounds",
             "type": "BOOLEAN",
             "defaultValue": true,
             "mandatory": true
         },
         {
             "name": "FORECAST_HORIZON",
-            "label": "Forecast horizon",
+            "label": "Forecasting horizon",
             "type": "INT",
             "mandatory": true,
             "defaultValue": 10,
-            "description": "in number of time steps  - will be overriden if you provided external regressors",
+            "description": "Number of future values to predict - overriden if you specified external features",
             "visibilityCondition": "model.INCLUDE_FORECAST"
         },
         {
             "name": "CONFIDENCE_INTERVAL",
-            "label": "Confidence interval",
+            "label": "Confidence interval (%)",
             "type": "INT",
             "mandatory": true,
             "defaultValue": 95,
-            "description": "%",
+            "description": "Compute lower and upper confidence bound forecasts",
             "visibilityCondition": "model.INCLUDE_FORECAST"
+        },
+        {
+            "name": "INCLUDE_HISTORY",
+            "label": "Include history",
+            "description": "Historical values, one-step forecasts and residuals (historical value - one-step forecast)",
+            "type": "BOOLEAN",
+            "defaultValue": true,
+            "mandatory": true
         }
     ],
     "resourceKeys": []

@@ -1,16 +1,17 @@
 {
     "meta": {
-        "label": "1. Clean time series",
+        "label": "0. Clean time series",
         "description": "Resample, aggregate and clean the time series from missing values and outliers",
         "icon": "icon-calendar-empty",
-        "iconColor": "grey"
+        "iconColor": "grey",
+        "displayOrderRank": 1
     },
     "kind": "R",
     "selectableFromDataset": "INPUT_DATASET_NAME",
     "inputRoles": [
         {
             "name": "INPUT_DATASET_NAME",
-            "label": "Input dataset",
+            "label": "Historical dataset",
             "description": "Input dataset with time series data",
             "arity": "UNARY",
             "required": true,
@@ -21,7 +22,7 @@
     "outputRoles": [
         {
             "name": "OUTPUT_DATASET_NAME",
-            "label": "Cleaned output dataset",
+            "label": "Cleaned historical dataset",
             "description": "Output dataset with the cleaned time series",
             "arity": "UNARY",
             "required": true,
@@ -33,12 +34,12 @@
         {
             "type": "SEPARATOR",
             "name": "separator_input",
-            "label": "Input data"
+            "label": "Input parameters"
         },
         {
             "name": "TIME_COLUMN",
             "label": "Time column",
-            "description": "Must be of parsed DATE type. Use a Prepare recipe to parse the date if needed.",
+            "description": "Must be a parsed date. Use a Prepare recipe to parse the date if needed.",
             "type": "COLUMN",
             "columnRole": "INPUT_DATASET_NAME",
             "mandatory": true
@@ -46,10 +47,18 @@
         {
             "name": "SERIES_COLUMNS",
             "label": "Series columns",
-            "description": "Must be of NUMERIC type",
+            "description": "Must be numeric",
             "type": "COLUMNS",
             "columnRole": "INPUT_DATASET_NAME",
-            "mandatory": true
+            "mandatory": true,
+            "allowedColumnTypes": [
+                "tinyint",
+                "smallint",
+                "int",
+                "bigint",
+                "float",
+                "double"
+            ]
         },
         {
             "type": "SEPARATOR",
@@ -58,7 +67,7 @@
         },
         {
             "name": "GRANULARITY",
-            "label": "Time granularity",
+            "label": "Frequency",
             "description": "How often data needs to be resampled",
             "type": "SELECT",
             "mandatory": true,
