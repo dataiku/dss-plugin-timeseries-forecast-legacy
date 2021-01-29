@@ -56,6 +56,9 @@ for(modelName in AVAILABLE_MODEL_NAME_LIST) {
     modelParameterList[[modelName]][["kwargs"]] <- as.list(config[[paste0(modelName,"_KWARGS")]])
   }
 }
+if (length(modelParameterList) == 0) {
+  PrintPlugin("Please select at least one model to train.", stop = TRUE)
+}
 
 # Handles default options for the cross-validation evaluation strategy
 if (config[["CROSSVAL_INITIAL"]] == -1) {
@@ -74,6 +77,16 @@ if(length(intersect(config[["EXT_SERIES_COLUMNS"]], forbiddenExternalColumnNames
                 paste(forbiddenExternalColumnNames, collapse = ", "),
                 "', please rename them.")
   PrintPlugin(errorMsg, stop = TRUE)
+}
+if ("" %in% config[["EXT_SERIES_COLUMNS"]]) {
+  PrintPlugin(paste("External features parameter has a blank column.",
+  "Please remove it or add a valid column."), stop = TRUE) 
+}
+if (trimws(config[["TIME_COLUMN"]]) == "" || is.null(config[["TIME_COLUMN"]])) {
+  PrintPlugin("Please specify the Time column parameter.", stop = TRUE) 
+}
+if (trimws(config[["SERIES_COLUMN"]]) == "" || is.null(config[["SERIES_COLUMN"]])) {
+  PrintPlugin("Please specify the Target column parameter.", stop = TRUE) 
 }
 columnClasses <- c("character", rep("numeric", 1 + length(config[["EXT_SERIES_COLUMNS"]])))
 df <- dkuReadDataset(INPUT_DATASET_NAME, columns = selectedColumns, colClasses = columnClasses)
@@ -97,10 +110,15 @@ names(df) <- c('ds','y', config[["EXT_SERIES_COLUMNS"]]) # Converts df to generi
 #   df[['cap']] <- config[["PROPHET_MODEL_MAXIMUM"]]
 # }
 
+# Check enough values in the train set
+if (nrow(df) - config[["EVAL_HORIZON"]] < 4) {
+  PrintPlugin(paste("Less than 4 data points to train models during the evaluation phase.",
+    "Please decrease the Horizon parameter."), stop = TRUE)
+}
 # Additional check on the number of rows of the input for the cross-validation evaluation strategy
 if (config[["EVAL_STRATEGY"]] == "crossval" && (config[["EVAL_HORIZON"]] + config[["CROSSVAL_INITIAL"]] > nrow(df))) {
-  PrintPlugin(paste("Less data than horizon after initial cross-validation window.",
-    "Make horizon or initial shorter."), stop = TRUE)
+  PrintPlugin(paste("Less data than Horizon after initial cross-validation window.",
+    "Please decrease Horizon and/or Initial training parameters."), stop = TRUE)
 }
 
 # Converts df to msts time series format

@@ -32,10 +32,16 @@ LoadForecastingObjects(MODEL_FOLDER_NAME)
 
 PrintPlugin("Model selection stage")
 
+evalDf <- dkuReadDataset(EVALUATION_DATASET_NAME, columns = c("model", config[["ERROR_METRIC"]]))
 if (config[["MODEL_SELECTION"]] == "auto") {
-  evalDf <- dkuReadDataset(EVALUATION_DATASET_NAME, columns = c("model", config[["ERROR_METRIC"]]))
   config[["SELECTED_MODEL"]] <- evalDf[[which.min(evalDf[[config[["ERROR_METRIC"]]]]), "model"]] %>%
     recode(!!!MODEL_UI_NAME_LIST_REV)
+} else {
+  manuallySelectedModel <- MODEL_UI_NAME_LIST[[config[["SELECTED_MODEL"]]]]
+  if (!(manuallySelectedModel %in% evalDf$model)) {
+    PrintPlugin(paste(manuallySelectedModel, "model has not been trained.", 
+    "Please select another model or re-run the Train recipe with this model."), stop = TRUE)
+  }
 }
 
 PrintPlugin(paste0("Model selection stage completed: ", config[["SELECTED_MODEL"]], " selected."))
