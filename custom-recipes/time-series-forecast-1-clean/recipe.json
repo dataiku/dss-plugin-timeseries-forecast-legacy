@@ -11,7 +11,7 @@
     "inputRoles": [
         {
             "name": "INPUT_DATASET_NAME",
-            "label": "Input dataset",
+            "label": "Historical dataset",
             "description": "Input dataset with time series data",
             "arity": "UNARY",
             "required": true,
@@ -22,7 +22,7 @@
     "outputRoles": [
         {
             "name": "OUTPUT_DATASET_NAME",
-            "label": "Cleaned output dataset",
+            "label": "Cleaned historical dataset",
             "description": "Output dataset with the cleaned time series",
             "arity": "UNARY",
             "required": true,
