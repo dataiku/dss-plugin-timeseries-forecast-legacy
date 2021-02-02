@@ -12,8 +12,8 @@ Documentation: https://www.dataiku.com/product/plugins/time-series-forecast-lega
 
 **Version 0.5.0 (2021-02)**
 
+- Harmonize UX with the [new Forecast plugin](https://www.dataiku.com/product/plugins/timeseries-forecast/)
 - Improve error messages
-- Harmonize UX with the new Forecast plugin
 - Mark as legacy
 
 **Version 0.4.1 (2020-02)**
