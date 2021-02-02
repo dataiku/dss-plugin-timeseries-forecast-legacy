@@ -4,7 +4,7 @@
 
 This Dataiku DSS plugin provides recipes to forecast univariate time series from year to hour frequency with R models.
 
-⚠️ Starting with version 0.5, this plugin is considered as "legacy". We will maintain it only to fix bugs. For the latest features and models, we recommend using the [new Forecast plugin](https://www.dataiku.com/product/plugins/timeseries-forecast/).**
+⚠️ Starting with version 0.5, this plugin is considered as "legacy". We will maintain it only to fix bugs. For the latest features and models, we recommend using the [new Forecast plugin](https://www.dataiku.com/product/plugins/timeseries-forecast/).
 
 Documentation: https://www.dataiku.com/product/plugins/time-series-forecast-legacy/
 
