@@ -1,6 +1,6 @@
 {
     "meta": {
-        "label": "0. Clean time series",
+        "label": "0. Clean time series (optional)",
         "description": "Resample, aggregate and clean the time series from missing values and outliers",
         "icon": "icon-calendar-empty",
         "iconColor": "grey",
