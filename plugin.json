@@ -2,7 +2,7 @@
     "id": "time-series-forecast",
     "version": "0.5.0",
     "meta": {
-        "label": "Forecast (Legacy)",
+        "label": "Forecast (legacy)",
         "category": "Time Series",
         "description": "Forecast univariate time series from year to hour frequency with R models. ⚠️ This plugin is now \"legacy\". For the latest features, we recommend using the <a href=\"https://www.dataiku.com/product/plugins/timeseries-forecast/\">new Forecast plugin</a>.",
         "author": "Dataiku (Alex COMBESSIE)",
