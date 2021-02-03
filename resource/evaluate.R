@@ -81,10 +81,12 @@ EvaluateModelsSplit <- function(ts, df, xreg = NULL, modelList, modelParameterLi
     refit = TRUE, refitModelList = modelList,
     verbose = FALSE
   )
+  evaluationTimes <- evalModelList[["trainingTimes"]]
+  evalModelList <- evalModelList[names(evalModelList) %in% AVAILABLE_MODEL_NAME_LIST]
   evalForecastDfList <- GetForecasts(trainTs, trainDf, evalXreg,
     evalModelList, modelParameterList, horizon, granularity)
   errorDf <- ComputeErrorMetricsSplit(evalForecastDfList, evalDf)
-  return(errorDf)
+  return(list("errorDf" = errorDf, "evaluationTimes" = evaluationTimes))
 }
 
 GenerateCutoffDatesCrossval <- function(df, horizon, granularity, initial, period) {
@@ -279,12 +281,16 @@ EvaluateModels <- function(ts, df, xreg = NULL, modelList, modelParameterList, e
 
   modelList <- modelList[names(modelList) %in% AVAILABLE_MODEL_NAME_LIST]
   if (evalStrategy == 'split') {
-    errorDf <- EvaluateModelsSplit(ts, df, xreg, modelList, modelParameterList,
+    evaluationResults <- EvaluateModelsSplit(ts, df, xreg, modelList, modelParameterList,
       horizon, granularity)
   } else if (evalStrategy == 'crossval') {
     errorDf <- EvaluateModelsCrossval(ts, df, xreg, modelList, modelParameterList,
       horizon, granularity, initial, period)
   }
+  errorDf <- evaluationResults[["errorDf"]]
+  evaluationTimes <- evaluationResults[["evaluationTimes"]]
+  evaluationTimesDf <- data.frame(model=names(evaluationTimes),
+    evaluation_time=unlist(evaluationTimes))
   trainingTimesDf <- data.frame()
   if (!is.null(trainingTimes)) {
     trainingTimesDf <- data.frame(
@@ -295,6 +301,7 @@ EvaluateModels <- function(ts, df, xreg = NULL, modelList, modelParameterList, e
     rename(mean_error = ME, root_mean_square_error = RMSE, mean_absolute_error = MAE,
       mean_percentage_error = MPE, mean_absolute_percentage_error = MAPE) %>%
     left_join(trainingTimesDf, by="model") %>%
+    left_join(evaluationTimesDf, by="model") %>%
     mutate(model = recode(model, !!!MODEL_UI_NAME_LIST)) %>%
     mutate_all(funs(ifelse(is.infinite(.), NA, .)))
   errorDf[["evaluation_horizon"]] <- as.integer(horizon)
