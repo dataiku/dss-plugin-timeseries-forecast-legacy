@@ -243,6 +243,13 @@ EvaluateModelsCrossval <- function(ts, df, xreg = NULL, modelList, modelParamete
       refit = TRUE, refitModelList = modelList,
       verbose = FALSE
     )
+    if (i == 1) {
+      evaluationTimes <- evalModelList[["trainingTimes"]] # initialization
+    } else {
+      evaluationTimesAtCutoff <- evalModelList[["trainingTimes"]]
+      evaluationTimes <- Map("+", evaluationTimes, evaluationTimesAtCutoff)
+    }
+    evalModelList <- evalModelList[names(evalModelList) %in% AVAILABLE_MODEL_NAME_LIST]
     forecastDfList <- GetForecasts(trainTs, trainDf, evalXreg,
       evalModelList, modelParameterList, horizon, granularity)
     for(modelName in names(forecastDfList)) {
@@ -253,7 +260,7 @@ EvaluateModelsCrossval <- function(ts, df, xreg = NULL, modelList, modelParamete
     }
   }
   errorDf <- ComputeErrorMetricsCrossval(crossvalDfList)
-  return(errorDf)
+  return(list("errorDf" = errorDf, "evaluationTimes" = evaluationTimes))
 }
 
 EvaluateModels <- function(ts, df, xreg = NULL, modelList, modelParameterList, evalStrategy,
@@ -284,7 +291,7 @@ EvaluateModels <- function(ts, df, xreg = NULL, modelList, modelParameterList, e
     evaluationResults <- EvaluateModelsSplit(ts, df, xreg, modelList, modelParameterList,
       horizon, granularity)
   } else if (evalStrategy == 'crossval') {
-    errorDf <- EvaluateModelsCrossval(ts, df, xreg, modelList, modelParameterList,
+    evaluationResults <- EvaluateModelsCrossval(ts, df, xreg, modelList, modelParameterList,
       horizon, granularity, initial, period)
   }
   errorDf <- evaluationResults[["errorDf"]]
