@@ -135,9 +135,9 @@ if(length(config[["EXT_SERIES_COLUMNS"]]) != 0) {
 
 PrintPlugin("Training stage starting...")
 
-modelList <- TrainForecastingModels(ts, df, externalRegressorMatrix, modelParameterList)
-trainingTimes <- modelList[["trainingTimes"]]
-modelList <- modelList[names(modelList) %in% AVAILABLE_MODEL_NAME_LIST]
+trainingResults <- TrainForecastingModels(ts, df, externalRegressorMatrix, modelParameterList)
+modelList <- trainingResults[["modelList"]]
+trainingTimes <- trainingResults[["trainingTimes"]]
 
 PrintPlugin("Training stage completed, saving models to output folder.")
 
@@ -154,9 +154,9 @@ SaveForecastingObjects(
 
 PrintPlugin(paste0("Evaluation stage starting with ", config[["EVAL_STRATEGY"]], " strategy..."))
 
-errorDf <- EvaluateModels(ts, df, externalRegressorMatrix, modelList, modelParameterList,
-  config[["EVAL_STRATEGY"]], config[["EVAL_HORIZON"]],  config[["GRANULARITY"]],
-  config[["CROSSVAL_INITIAL"]], config[["CROSSVAL_PERIOD"]], trainingTimes)
+errorDf <- EvaluateModels(ts, df, externalRegressorMatrix, modelList, trainingTimes,
+  modelParameterList, config[["EVAL_STRATEGY"]], config[["EVAL_HORIZON"]],
+  config[["GRANULARITY"]], config[["CROSSVAL_INITIAL"]], config[["CROSSVAL_PERIOD"]])
 errorDf[["training_date"]] <- strftime(versionName, dkuDateFormat)
 
 PrintPlugin("Evaluation stage completed, saving evaluation results to output dataset.")
