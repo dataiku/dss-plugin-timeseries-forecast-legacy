@@ -139,7 +139,7 @@
         },
         {
             "name": "NAIVE_MODEL_METHOD",
-            "label": "↳ method",
+            "label": "  ↳ Method",
             "type": "SELECT",
             "mandatory": false,
             "defaultValue": "simple",
@@ -162,7 +162,7 @@
         {
             "name": "NAIVE_MODEL_KWARGS",
             "type": "MAP",
-            "label": "↳ additional parameters",
+            "label": "  ↳ Optional parameters",
             "visibilityCondition": "false",
             "mandatory": false
         },
@@ -180,7 +180,7 @@
         // },
         // {
         //   "name": "PROPHET_MODEL_GROWTH",
-        //   "label": "↳ Growth",
+        //   "label": "  ↳ Growth",
         //   "description": "Use a linear or logistic trend",
         //   "type": "SELECT",
         //   "defaultValue": "linear",
@@ -199,7 +199,7 @@
         // },
         // {
         //   "name": "PROPHET_MODEL_MINIMUM",
-        //   "label": "↳ Minimum",
+        //   "label": "  ↳ Minimum",
         //   "description": "Saturating minimum for logistic growth",
         //   "type": "DOUBLE",
         //   "defaultValue": 0.0,
@@ -208,7 +208,7 @@
         // },
         // {
         //   "name": "PROPHET_MODEL_MAXIMUM",
-        //   "label": "↳ Maximum",
+        //   "label": "  ↳ Maximum",
         //   "description": "Saturating maximum for logistic growth",
         //   "type": "DOUBLE",
         //   "defaultValue": 1.0,
@@ -218,8 +218,8 @@
         // {
         //   "name": "PROPHET_MODEL_KWARGS",
         //   "type": "MAP",
-        //   "label": "↳  additional parameters",
-        //   "description": "Optional keyword arguments from cran.r-project.org/web/packages/prophet/prophet.pdf",
+        //   "label": "  ↳ Optional parameters",
+        //   "description": "Keyword argument ⟶ value cf. cran.r-project.org/web/packages/prophet/prophet.pdf",
         //   "visibilityCondition": "model.AUTOML=='expert' && model.PROPHET_MODEL_ACTIVATED",
         //   "mandatory": false
         // },
@@ -237,7 +237,7 @@
         },
         {
             "name": "NEURALNETWORK_MODEL_NUMBER_SEASONAL_LAGS",
-            "label": "↳ seasonal lags",
+            "label": "  ↳ Seasonal lags",
             "description": "Number of seasonal lags used as inputs. Default is 1.",
             "type": "INT",
             "mandatory": false,
@@ -246,7 +246,7 @@
         },
         {
             "name": "NEURALNETWORK_MODEL_NUMBER_NON_SEASONAL_LAGS",
-            "label": "↳ non-seasonal lags",
+            "label": "  ↳ Non-seasonal lags",
             "description": "Number of non-seasonal lags used as inputs. Leave -1 for automatic selection.",
             "type": "INT",
             "mandatory": false,
@@ -255,7 +255,7 @@
         },
         {
             "name": "NEURALNETWORK_MODEL_SIZE",
-            "label": "↳ number of neurons",
+            "label": "  ↳ Number of neurons",
             "description": "Number of neurons in the hidden layer. Leave -1 for automatic selection.",
             "type": "INT",
             "mandatory": false,
@@ -265,8 +265,8 @@
         {
             "name": "NEURALNETWORK_MODEL_KWARGS",
             "type": "MAP",
-            "label": "↳ additional parameters",
-            "description": "Optional keyword arguments from www.rdocumentation.org/packages/forecast/versions/8.13/topics/nnetar",
+            "label": "  ↳ Optional parameters",
+            "description": "Keyword argument ⟶ value cf. https://www.rdocumentation.org/packages/forecast/versions/8.13/topics/nnetar",
             "visibilityCondition": "model.AUTOML=='expert' && model.NEURALNETWORK_MODEL_ACTIVATED",
             "mandatory": false
         },
@@ -284,7 +284,7 @@
         },
         {
             "name": "ARIMA_MODEL_STEPWISE",
-            "label": "↳ stepwise",
+            "label": "  ↳ Stepwise",
             "description": "Use stepwise procedure to speed up the search for model parameters",
             "type": "BOOLEAN",
             "defaultValue": true,
@@ -294,8 +294,8 @@
         {
             "name": "ARIMA_MODEL_KWARGS",
             "type": "MAP",
-            "label": "↳ additional parameters",
-            "description": "Optional keyword arguments from www.rdocumentation.org/packages/forecast/versions/8.13/topics/auto.arima",
+            "label": "  ↳ Optional parameters",
+            "description": "Keyword argument ⟶ value cf. https://www.rdocumentation.org/packages/forecast/versions/8.13/topics/auto.arima",
             "visibilityCondition": "model.AUTOML=='expert' && model.ARIMA_MODEL_ACTIVATED",
             "mandatory": false
         },
@@ -314,8 +314,8 @@
         {
             "name": "SEASONALTREND_MODEL_KWARGS",
             "type": "MAP",
-            "label": "↳ additional parameters",
-            "description": "Optional keyword arguments from www.rdocumentation.org/packages/forecast/versions/8.13/topics/forecast.stl",
+            "label": "  ↳ Optional parameters",
+            "description": "Keyword argument ⟶ value cf. https://www.rdocumentation.org/packages/forecast/versions/8.13/topics/forecast.stl",
             "visibilityCondition": "model.AUTOML=='expert' && model.SEASONALTREND_MODEL_ACTIVATED",
             "mandatory": false
         },
@@ -333,7 +333,7 @@
         },
         {
             "name": "EXPONENTIALSMOOTHING_MODEL_ERROR_TYPE",
-            "label": "↳ error type",
+            "label": "  ↳ Error type",
             "type": "SELECT",
             "mandatory": false,
             "defaultValue": "Z",
@@ -359,7 +359,7 @@
         },
         {
             "name": "EXPONENTIALSMOOTHING_MODEL_TREND_TYPE",
-            "label": "↳ trend type",
+            "label": "  ↳ Trend type",
             "type": "SELECT",
             "mandatory": false,
             "defaultValue": "Z",
@@ -385,7 +385,7 @@
         },
         {
             "name": "EXPONENTIALSMOOTHING_MODEL_SEASONALITY_TYPE",
-            "label": "↳ seasonality type",
+            "label": "  ↳ Seasonality type",
             "type": "SELECT",
             "mandatory": false,
             "defaultValue": "Z",
@@ -412,8 +412,8 @@
         {
             "name": "EXPONENTIALSMOOTHING_MODEL_KWARGS",
             "type": "MAP",
-            "label": "↳ additional parameters",
-            "description": "Optional keyword arguments from www.rdocumentation.org/packages/forecast/versions/8.13/topics/ets",
+            "label": "  ↳ Optional parameters",
+            "description": "Keyword argument ⟶ value cf. https://www.rdocumentation.org/packages/forecast/versions/8.13/topics/ets",
             "visibilityCondition": "model.AUTOML=='expert' && model.EXPONENTIALSMOOTHING_MODEL_ACTIVATED",
             "mandatory": false
         },
@@ -432,8 +432,8 @@
         {
             "name": "STATESPACE_MODEL_KWARGS",
             "type": "MAP",
-            "label": "↳ additional parameters",
-            "description": "Optional keyword arguments from www.rdocumentation.org/packages/forecast/versions/8.13/topics/tbats",
+            "label": "  ↳ Optional parameters",
+            "description": "Keyword argument ⟶ value cf. https://www.rdocumentation.org/packages/forecast/versions/8.13/topics/tbats",
             "mandatory": false,
             "visibilityCondition": "model.AUTOML=='expert' && model.STATESPACE_MODEL_ACTIVATED"
         },
