@@ -1,6 +1,6 @@
 # Time Series Forecast Plugin (legacy)
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/dataiku/dss-plugin-time-series-forecast-legacy) ![Build status](https://img.shields.io/badge/build-passing-brightgreen) ![Support level](https://img.shields.io/badge/support-Unsupported-orange)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/dataiku/dss-plugin-timeseries-forecast-legacy) ![Build status](https://img.shields.io/badge/build-passing-brightgreen) ![Support level](https://img.shields.io/badge/support-Unsupported-orange)
 
 This Dataiku DSS plugin provides recipes to forecast univariate time series from year to hour frequency with R models.
 
