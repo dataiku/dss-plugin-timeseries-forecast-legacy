@@ -136,6 +136,7 @@ TrainForecastingModels <- function(ts, df, xreg = NULL, modelParameterList,
   #   Named list of fitted model
 
   modelList <- list()
+  trainingTimes <- list()
   for(modelName in names(modelParameterList)) {
     modelParameters <- modelParameterList[[modelName]]
     modelParameters[["kwargs"]][["y"]] <- ts
@@ -164,11 +165,9 @@ TrainForecastingModels <- function(ts, df, xreg = NULL, modelParameterList,
           PrintPlugin(paste(modelNameUI, "model training failed. Error message:", e), stop=TRUE)
       })
     endTime <- Sys.time()
-    if (!refit) {
-      modelList[["trainingTimes"]][[modelName]] = endTime - startTime
-    }
+    trainingTimes[[modelName]] = endTime - startTime
     PrintPlugin(paste(modelNameUI, " model training completed after", 
       round(endTime - startTime, 1), "seconds"), verbose)
   }
-  return(modelList)
+  return(list("modelList"=modelList, "trainingTimes"=trainingTimes))
 }
