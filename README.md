@@ -8,7 +8,7 @@ This Dataiku DSS plugin provides recipes to forecast univariate time series from
 
 Documentation: https://www.dataiku.com/product/plugins/time-series-forecast-legacy/
 
-## Changelog
+## Release notes
 
 **Version 0.5.0 (2021-02)**
 
