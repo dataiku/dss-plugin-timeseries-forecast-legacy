@@ -7,7 +7,7 @@
         "description": "Forecast univariate time series from year to hour frequency with R models. ⚠️ This plugin is now \"legacy\". For the latest features, we recommend using the <a href=\"https://www.dataiku.com/product/plugins/timeseries-forecast/\">new Forecast plugin</a>.",
         "author": "Dataiku (Alex COMBESSIE)",
         "icon": "icon-calendar",
-        "iconColor": "grey",
+        "iconColor": "gray",
         "licenseInfo": "MIT License",
         "url": "https://www.dataiku.com/product/plugins/time-series-forecast-legacy/",
         "tags": [
