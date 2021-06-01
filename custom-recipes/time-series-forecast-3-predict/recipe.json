@@ -3,7 +3,7 @@
         "label": "2. Forecast future values and get historical residuals",
         "description": "Use trained forecasting models to predict future values and/or get historical residuals",
         "icon": "icon-signal",
-        "iconColor": "grey",
+        "iconColor": "gray",
         "displayOrderRank": 3
     },
     "kind": "R",
