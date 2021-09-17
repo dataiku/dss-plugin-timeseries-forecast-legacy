@@ -16,7 +16,7 @@
             "arity": "UNARY",
             "required": true,
             "acceptsDataset": true,
-            "acceptsFolder": false
+            "acceptsManagedFolder": false
         }
     ],
     "outputRoles": [
@@ -27,7 +27,7 @@
             "arity": "UNARY",
             "required": true,
             "acceptsDataset": true,
-            "acceptsFolder": false
+            "acceptsManagedFolder": false
         }
     ],
     "params": [
