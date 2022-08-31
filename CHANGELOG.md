@@ -1,6 +1,10 @@
 
 ## Changelog
 
+## [Version 0.5.2](https://github.com/dataiku/dss-plugin-timeseries-forecast-legacy/releases/tag/v0.5.2) - Deprecation release - 2022-08
+
+- ⚠️ The plugin is made deprecated
+
 ## [Version 0.5.1](https://github.com/dataiku/dss-plugin-timeseries-forecast-legacy/releases/tag/v0.5.1) - Bugfix release - 2021-02
 
 - Fix the unselectable output folder of recipes
