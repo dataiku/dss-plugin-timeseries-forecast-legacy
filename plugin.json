@@ -2,9 +2,9 @@
     "id": "time-series-forecast",
     "version": "0.5.2",
     "meta": {
-        "label": "Forecast (deprecated)",
+        "label": "Forecast (legacy)",
         "category": "Time Series",
-        "description": "Forecast univariate time series from year to hour frequency with R models. ⚠️ This plugin is now \"deprecated\", we recommend using the native [time series forecasting](https://doc.dataiku.com/dss/latest/machine-learning/time-series-forecasting/index.html) features instead.",
+        "description": "Forecast univariate time series from year to hour frequency with R models. ⚠️ This plugin is now \"legacy\", we recommend using the native [time series forecasting](https://doc.dataiku.com/dss/latest/machine-learning/time-series-forecasting/index.html) features instead.",
         "author": "Dataiku (Alex COMBESSIE)",
         "icon": "icon-calendar",
         "iconColor": "gray",
